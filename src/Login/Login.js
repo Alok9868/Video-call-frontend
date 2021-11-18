@@ -4,6 +4,7 @@ import cookie from 'react-cookies';
 import { Navigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { signInWithPopup } from "firebase/auth";
+import Home from '../Home/Home'
 function Login() {
   const [userid, setuserid] = useState(cookie.load('userid'));
   function signin() {
@@ -31,21 +32,9 @@ function Login() {
 
   return userid ? <Navigate to="/Home" />
     :
-    // Make a seprate login page
-      <div className="login">
-<div className="login_container">
-    <img 
-    src="https://png.pngtree.com/png-vector/20190214/ourlarge/pngtree-vector-notes-icon-png-image_509622.jpg" 
-    alt="Keeper App "/>
-    <div className="login_text">
-        <h1> CALLING  App</h1>
-    </div>
-    <Button variant="secondary" onClick={signin}>
-        Sign in with Google
-    </Button>
-</div>
-</div>
-      
+    <Home 
+    signin={signin}
+    />
        
 }
 

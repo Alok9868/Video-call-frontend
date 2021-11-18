@@ -13,7 +13,6 @@ function JoinRoomContent(props) {
     const [nameValue, setNameValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-
     async function handleJoinRoom() {
         // joining the room
         setIdentityAction(nameValue)
@@ -55,11 +54,12 @@ function JoinRoomContent(props) {
                 setNameValue={setNameValue}
                 isRoomHost={isRoomHost}
             />
-            <OnlyAudioWithCheckbox
+
+            {/* <OnlyAudioWithCheckbox
 
                 setConnectOnlyWithAudio={setConnectOnlyWithAudio}
                 connectOnlyWithAudio={connectOnlyWithAudio}
-            />
+            /> */}
             <ErrorMessage errorMessage={errorMessage} />
             <JoinRoomButtons
                 handleJoinRoom={handleJoinRoom}
