@@ -1,10 +1,10 @@
 import React from 'react';
-import './endpage.css';
+import './NoURL.css';
 import logo from './logo.png';
 import { useNavigate } from 'react-router-dom';
 
 
-const Endpage = () => {
+const NoURL = () => {
 
     let navigate = useNavigate();
     function end() {
@@ -15,7 +15,7 @@ const Endpage = () => {
         <>
             <div className="end-main-div my-flex">
                 <img src={logo} alt="" className="logo-end-page" />
-                <h1>You have ended the meeting for everyone</h1>
+                <h1>NO SUCH URL EXISTS</h1>
                 <button
                     className="return-home-btn my-flex"
                     onClick={end}
@@ -26,4 +26,4 @@ const Endpage = () => {
 }
 
 
-export default Endpage;
+export default NoURL;

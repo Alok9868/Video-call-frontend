@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import NoURL from './NoURL'
+import NoURL from './NoURL/NoURL.jsx'
 // import IntroductionPage from './IntroductionPage/IntroductionPage';
 import RoomPage from './RoomPage/RoomPage'
 import JoinRoomPage from './JoinRoom/JoinRoomPage'

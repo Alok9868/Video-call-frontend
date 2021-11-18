@@ -40,7 +40,7 @@ function showLocalVideoPreview(stream) {
     const videoContainer = document.createElement('div');
     videosContainer.classList.add('video_track_container');
     const videoElement = document.createElement('video');
-    videoElement.autoplay = true;
+    videoElement.autoPlay = true;
     videoElement.muted=true;
     // videoElement.muted = true;
     videoElement.srcObject = stream;
@@ -116,7 +116,7 @@ const addStream = (stream, connUserSocketId) => {
     videoContainer.id = connUserSocketId;
     videoContainer.classList.add('video_track_container');
     const videoElement = document.createElement('video');
-    videoElement.autoplay = true;
+    videoElement.autPlay = true;
     videoElement.srcObject = stream;
     videoElement.id = `${connUserSocketId}-video`;
 

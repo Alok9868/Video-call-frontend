@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { auth, provider } from "./firebase";
 import cookie from 'react-cookies';
 import { Navigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import { signInWithPopup } from "firebase/auth";
 import Home from '../Home/Home'
 function Login() {

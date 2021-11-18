@@ -1,5 +1,7 @@
 import axios from 'axios';
-const  serverApi="http://localhost:8000/api";
+import {server} from '../baseurl';
+const  serverApi=`${server}/api`;
+
 export  const  getRoomExists = async(roomID)=>{
     const response = await axios.get(`${serverApi}/room-exists/${roomID}`);
     return response.data

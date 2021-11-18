@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {setIsRoomHost} from '../store/actions'
  function IntroductionPage({setIsRoomHostAction}) {
      useEffect(() => {
-        setIsRoomHostAction(false)
+        setIsRoomHostAction(false);
      }, [])
     return (
         <div className="introduction_page_container">

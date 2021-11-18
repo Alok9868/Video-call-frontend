@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import Switchimg from '../../resources/switchToScreenSharing (1).svg';
 import LocalScreenSharingPreview from './LocalScreenSharingPreview';
 import * as WebRTCHandler from '../../utils/WebRTCHandler'

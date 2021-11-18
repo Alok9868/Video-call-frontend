@@ -2,7 +2,8 @@ import io from 'socket.io-client';
 import store from '../store/store'
 import * as WebRTCHandler from './WebRTCHandler'
 import {setRoomId ,setParticipants} from '../store/actions'
-const Server="http://localhost:8000/"
+import {server} from '../baseurl';
+const Server=server;
 let socket=null;
 export const connectWithSocketIOServer = ()=>{
     socket=io(Server);

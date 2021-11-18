@@ -14,9 +14,7 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay }) {
     useEffect(() => {
         if (!isRoomHost && !roomId) {
             const siteURL = window.location.origin;
-            console.log(siteURL);
             window.location.href = siteURL;
-
         }
         else {
             WebRTCHandler.getLocalPreviewAndInitConnection(

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import * as api from './apiRequests';
 let TURNIceServers=null;
 

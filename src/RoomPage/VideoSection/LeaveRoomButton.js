@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import url from '../../baseurl';
 
 export default function LeaveRoomButton() {
 
@@ -12,7 +13,7 @@ export default function LeaveRoomButton() {
     return (
         <div className="video_button_container">
             <button className="video_button_end" onClick={handleRoomDisconnection}>
-            <a href="http://localhost:3000/end" >Leave Room</a> 
+            <a href={url} >Leave Room</a> 
             </button>
         </div>
     )
