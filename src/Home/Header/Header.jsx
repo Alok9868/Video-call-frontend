@@ -33,7 +33,7 @@ const Header = ({ signin }) => {
                 <img src={logo} alt="" className="logo" />
                { name ? <h3>Welcome {name}</h3> : " "}
                <h3>{d}</h3>
-                { photoURL ? <Avatar alt="Travis Howard" src={photoURL} className="user-avatar" /> : <Avatar alt="Travis Howard" src={`https://avatars.dicebear.com/api/avataaars/1djc.svg?background=%230000ff`} className="user-avatar" />}
+                { photoURL ? <Avatar alt="Travis Howard" src={photoURL} className="user-avatar" /> :" "}
                 { name ? <button onClick={signout}>Sign out</button> : <button onClick={signin}>Sign in</button>}
             </div>
         </>

@@ -55,7 +55,7 @@ export default function ScreenRecording() {
         numberOfAudioChannels: 2,
 
         // used by WebAssemblyRecorder
-        frameRate: 60,
+        frameRate: 120,
 
         // used by WebAssemblyRecorder
         bitrate: 128000,
