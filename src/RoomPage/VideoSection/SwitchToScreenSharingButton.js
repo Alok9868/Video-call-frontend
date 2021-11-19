@@ -25,12 +25,10 @@ export default function SwitchToScreenSharingButton() {
                     stream.getVideoTracks()[0].onended = function () {
                         WebRTCHandler.toggleScreenShare(!isScreenSharingActive);
                         setIsScreenSharingActive(false);
-                        console.log(screenSharingStream);
-                        // screenSharingStream.getTracks().forEach((t)=>t.stop() );
                         setScreenSharingStream(null);
                         console.log('screen recording stopped');
                     };
-                    setIsScreenSharingActive(!isScreenSharingActive);
+                    // setIsScreenSharingActive(!isScreenSharingActive);
                 
                 }).catch((error) => {
                     console.log('====================================');
@@ -56,7 +54,7 @@ export default function SwitchToScreenSharingButton() {
             setIsScreenSharingActive(false);
             screenSharingStream.getTracks().forEach((t) => t.stop());
             setScreenSharingStream(null);
-            setIsScreenSharingActive(!isScreenSharingActive);
+            // setIsScreenSharingActive(!isScreenSharingActive);
         }
        
     }
