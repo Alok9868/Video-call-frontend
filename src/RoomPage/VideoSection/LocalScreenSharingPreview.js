@@ -11,7 +11,7 @@ export default function LocalScreenSharingPreview({stream}) {
     }, [stream])
     return (
         <div className="local_screen_share_preview">
-            <video muted autoplay ref={localPreviewRef} />
+            <video muted autoPlay ref={localPreviewRef} />
         </div>
     )
 }

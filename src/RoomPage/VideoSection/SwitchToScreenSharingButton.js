@@ -13,29 +13,42 @@ export default function SwitchToScreenSharingButton() {
 
     const handleScreenShareToggle = async () => {
         if (!isScreenSharingActive) {
-            
-            try {
-                stream = await navigator.mediaDevices.getDisplayMedia(constraits);
-                stream.getVideoTracks()[0].onended = function () {
-                    WebRTCHandler.toggleScreenShare(!isScreenSharingActive);
-                    setIsScreenSharingActive(false);
-                    console.log(screenSharingStream);
-                    // screenSharingStream.getTracks().forEach((t)=>t.stop() );
-                    setScreenSharingStream(null);
-                    console.log('screen recording stopped');
-                };
+            // try {
+                await navigator.mediaDevices.getDisplayMedia(constraits).then((stream) => {
+                    console.log('====================================');
+                    console.log(stream);
+                    console.log('====================================');
+                    setScreenSharingStream(stream);
+                    WebRTCHandler.toggleScreenShare(isScreenSharingActive, stream);
+                    setIsScreenSharingActive(true);
 
-            }
-            catch (err) {
-                console.log('err occured in screenSharingStream', err);
-            }
-            if (stream) {
-                setScreenSharingStream(stream);
-                WebRTCHandler.toggleScreenShare(isScreenSharingActive, stream);
-                setIsScreenSharingActive(true);
+                    stream.getVideoTracks()[0].onended = function () {
+                        WebRTCHandler.toggleScreenShare(!isScreenSharingActive);
+                        setIsScreenSharingActive(false);
+                        console.log(screenSharingStream);
+                        // screenSharingStream.getTracks().forEach((t)=>t.stop() );
+                        setScreenSharingStream(null);
+                        console.log('screen recording stopped');
+                    };
+                    setIsScreenSharingActive(!isScreenSharingActive);
+                
+                }).catch((error) => {
+                    console.log('====================================');
+                    console.log('error in screen sharing',error);
+                    console.log('====================================');
+                    return;
+                })
+                
+
+            // }
+            // catch (err) {
+            //     console.log('err occured in screenSharingStream', err);
+            // }
+            // if (stream) {
+               
 
 
-            }
+            // }
 
         }
         else {
@@ -43,9 +56,9 @@ export default function SwitchToScreenSharingButton() {
             setIsScreenSharingActive(false);
             screenSharingStream.getTracks().forEach((t) => t.stop());
             setScreenSharingStream(null);
+            setIsScreenSharingActive(!isScreenSharingActive);
         }
-
-        setIsScreenSharingActive(!isScreenSharingActive);
+       
     }
 
     return (

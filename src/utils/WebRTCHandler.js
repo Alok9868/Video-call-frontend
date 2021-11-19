@@ -13,8 +13,8 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
     await fetchTurnCredentials();
     const constraits = {
         video: true ? {
-            // frameRate: 30,
-            // noiseSuppression: true,
+            frameRate: 30,
+            noiseSuppression: true,
             // width: { min: 640, ideal: 1280, max: 1920 },
             // height: { min: 480, ideal: 720, max: 1080 }
             width: '480',
@@ -22,6 +22,14 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
         } : false,
         audio: true,
     }
+    // async function getConnectedDevices(type) {
+    //     const devices = await navigator.mediaDevices.enumerateDevices();
+    //     return devices.filter(device => device.kind === type)
+    // }
+    
+    // // Get the initial set of cameras connected
+    // const videoCameras = getConnectedDevices('videoinput');
+
     navigator.mediaDevices.getUserMedia(constraits)
         .then((stream) => {
             localstream = stream;
@@ -31,6 +39,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
         })
         .catch((err) => {
             console.log('error in accessing local stream: ' + err.message);
+            // navigate to error in accessing local stream
 
         })
 }
@@ -98,7 +107,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     });
     peers[connUserSocketId].on('stream', (stream) => {
         console.log('new stream', stream);
-
+        stream.active = true;
         addStream(stream, connUserSocketId);
 
         streams.push(stream)
