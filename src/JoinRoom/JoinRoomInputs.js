@@ -26,11 +26,11 @@ export default function JoinRoomInputs(props) {
                 value={roomIdValue}
                 changeHandler={handleRoomIdValueChange}
             /> :" "}
-                <Input
+                {/* <Input
                     placeholder='Enter your name'
                     value={nameValue}
                     changeHandler={handleNameValueChange}
-                />
+                /> */}
         </div>
         </>
     )

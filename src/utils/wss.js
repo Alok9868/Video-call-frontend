@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import store from '../store/store'
 import * as WebRTCHandler from './WebRTCHandler'
-import {setRoomId ,setParticipants} from '../store/actions'
+import {setRoomId ,setParticipants, setSocketId} from '../store/actions'
 import {server} from '../baseurl';
 const Server=server;
 let socket=null;
@@ -9,6 +9,7 @@ export const connectWithSocketIOServer = ()=>{
     socket=io(Server);
     socket.on('connect',()=>{
         console.log('successfully connected with socket io server');
+        store.dispatch(setSocketId(socket.id));
         console.log(socket.id)
     });
     socket.on('room-id',(data)=>{

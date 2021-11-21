@@ -2,11 +2,15 @@ import Actions from './actions'
 const initState = {
     identity: " ",
     isRoomHost: false,
-    connectOnlyWithAudio: false,
-    roomId:null,
-    showOverlay:true,
-    participants:[],
-    messages:[],
+    connectOnlyWithAudio: true,
+    roomId: null,
+    showOverlay: true,
+    participants: [],
+    messages: [],
+    connectOnlyWithVideo: true,
+    activeConversation: {},
+    directChatHistory: [],
+    socketId: null,
 }
 const reducer = (state = initState, action) => {
     switch (action.type) {
@@ -20,11 +24,17 @@ const reducer = (state = initState, action) => {
                 ...state,
                 connectOnlyWithAudio: action.onlyWithAudio,
 
+            };
+        case Actions.SET_CONNECT_ONLY_WITH_VIDEO:
+            return {
+                ...state,
+                connectOnlyWithVideo: action.onlyWithVideo,
+
             }
         case Actions.SET_ROOM_ID:
             return {
                 ...state,
-                roomId:action.roomId
+                roomId: action.roomId
             }
         case Actions.SET_IDENTITY:
             return {
@@ -35,17 +45,32 @@ const reducer = (state = initState, action) => {
         case Actions.SET_SHOW_OVERLAY:
             return {
                 ...state,
-                showOverlay:action.showOverlay
+                showOverlay: action.showOverlay
             }
         case Actions.SET_PARTICIPANTS:
             return {
                 ...state,
-                participants:action.participants
+                participants: action.participants
             }
         case Actions.SET_MESSAGES:
             return {
                 ...state,
-                messages:action.messages
+                messages: action.messages
+            }
+        case Actions.SET_ACTIVE_CONVERSATION:
+            return {
+                ...state,
+                activeConversation: action.activeConversation
+            }
+        case Actions.SET_DIRECT_CHAT_HISTORY:
+            return {
+                ...state,
+                directChatHistory: action.directChatHistory
+            }
+        case Actions.SET_SOCKET_ID:
+            return {
+                ...state,
+                socketId: action.socketId
             }
         default:
             return state

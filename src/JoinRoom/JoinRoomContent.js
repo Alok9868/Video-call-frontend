@@ -1,20 +1,36 @@
 import React, { useState } from 'react'
 import JoinRoomInputs from './JoinRoomInputs';
 import { connect } from 'react-redux';
-import { setConnectOnlyWithAudio, setRoomId, setIdentity } from '../store/actions'
+import { setConnectOnlyWithAudio, setRoomId, setIdentity, setConnectOnlyWithVideo } from '../store/actions'
 import ErrorMessage from './ErrorMessage'
 import JoinRoomButtons from './JoinRoomButtons';
-import {getRoomExists} from '../utils/apiRequests'
+import { getRoomExists } from '../utils/apiRequests'
 import { useNavigate } from 'react-router-dom';
+import OnlyAudioWithCheckbox from "./OnlyAudioWithCheckbox";
+import OnlyVideoWithCheckbox from "./OnlyVideoWithCheckbox";
+import cookie from 'react-cookies';
+
 function JoinRoomContent(props) {
-    const { isRoomHost,setRoomIdAction, setIdentityAction } = props;
+    const {
+        isRoomHost,
+        setRoomIdAction,
+        setIdentityAction,
+        setConnectOnlyWithAudio,
+        connectOnlyWithAudio,
+        setConnectOnlyWithVideo,
+        connectOnlyWithVideo
+    } = props;
     const [roomIdValue, setRoomIdValue] = useState('');
     const [nameValue, setNameValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     async function handleJoinRoom() {
         // joining the room
-        setIdentityAction(nameValue)
+        // if (nameValue === '') {
+        //     window.alert('Please enter a valid name');
+        //     return;
+        // }
+        setIdentityAction(cookie.load('displayName'));
         if (isRoomHost) {
             createRoom();
         }
@@ -54,11 +70,14 @@ function JoinRoomContent(props) {
                 isRoomHost={isRoomHost}
             />
 
-            {/* <OnlyAudioWithCheckbox
-
+            <OnlyAudioWithCheckbox
                 setConnectOnlyWithAudio={setConnectOnlyWithAudio}
                 connectOnlyWithAudio={connectOnlyWithAudio}
-            /> */}
+            />
+            <OnlyVideoWithCheckbox
+                setConnectOnlyWithVideo={setConnectOnlyWithVideo}
+                connectOnlyWithVideo={connectOnlyWithVideo}
+            />
             <ErrorMessage errorMessage={errorMessage} />
             <JoinRoomButtons
                 handleJoinRoom={handleJoinRoom}
@@ -75,10 +94,12 @@ const mapStoreStateToProps = (state) => {
     }
 }
 const mapActionsToProps = (dispatch) => {
+    // dispatch is used to store new object in store state
     return {
         setConnectOnlyWithAudio: (onlyWithAudio) => dispatch(setConnectOnlyWithAudio(onlyWithAudio)),
         setIdentityAction: (identity) => dispatch(setIdentity(identity)),
         setRoomIdAction: (roomId) => dispatch(setRoomId(roomId)),
+        setConnectOnlyWithVideo: (onlyWithVideo) => dispatch(setConnectOnlyWithVideo(onlyWithVideo))
     }
 
 }

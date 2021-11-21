@@ -12,6 +12,9 @@ function JoinRoomPage(props) {
 
         const isRoomHost = new URLSearchParams(search).get('host');
         if (isRoomHost) {
+            console.log('====================================');
+            console.log(setIsRoomHostAction);
+            console.log('====================================');
             setIsRoomHostAction(true);
         }
     }, [])

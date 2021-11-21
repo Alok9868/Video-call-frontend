@@ -20,7 +20,6 @@ export default function JoinRoomButtons({ handleJoinRoom, isRoomHost }) {
         <div className="join_room_button_container">
 
             <Button
-
                 buttontext={successButtonText}
                 onClickHandler={handleJoinRoom}
             />

@@ -3,7 +3,9 @@ import { auth, provider } from "./firebase";
 import cookie from 'react-cookies';
 import { Navigate } from 'react-router-dom';
 import { signInWithPopup } from "firebase/auth";
-import Home from '../Home/Home'
+import Home from '../Home/Home';
+import {setIdentity} from '../store/actions'
+import store from '../store/store'
 function Login() {
   const [userid, setuserid] = useState(cookie.load('userid'));
   function signin() {
@@ -18,6 +20,7 @@ function Login() {
         cookie.save("userid", token, { path: '/', expires, maxAge: 1000000 });
         cookie.save('displayName', name, { path: '/', expires, maxAge: 1000000 });
         cookie.save('photoURL', photoURL, { path: '/', expires, maxAge: 1000000 });
+        // store.dispatch(setIdentity(name))
         setuserid(result.user.uid);
         // ...
       }).catch((error) => {

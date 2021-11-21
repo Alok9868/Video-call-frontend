@@ -8,8 +8,23 @@ export default function ScreenRecording() {
   const [show, setShow] = useState(false);
   async function startRecording() {
     await navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: true
+      video: {
+        cursor: 'never',
+        displaySurface: 'monitor',
+        aspectRatio: 1.7777777777777777,
+        frameRate: 60,
+        height: 1080,
+        logicalSurface: true,
+        resizeMode: "crop-and-scale",
+        width: 1920
+      },
+      audio: {
+        echoCancellation: true,
+        sampleRate: 100,
+        volume: 0.0,
+        restrictOwnAudio:true,
+        noiseSuppression: true,
+      }
     }).then(async function (stream) {
 
       // {'echoCancellation': true}
@@ -37,8 +52,8 @@ export default function ScreenRecording() {
         bitsPerSecond: 128000,
         timeSlice: 1000,
         disableLogs: true,
-        frameInterval: 90,
-        video: { width: 3840, height: 2160 },
+        frameInterval: 60,
+        video: { width: 1920, height: 1080 },
         sampleRate: 96000,
 
         // used by StereoAudioRecorder
@@ -121,9 +136,9 @@ export default function ScreenRecording() {
   }
 
   function stopRecording() {
-      localstream.getTracks().forEach((t) => t.stop());
+    localstream.getTracks().forEach((t) => t.stop());
 
-      localaudio.getTracks().forEach((t) => t.stop());
+    localaudio.getTracks().forEach((t) => t.stop());
 
 
 

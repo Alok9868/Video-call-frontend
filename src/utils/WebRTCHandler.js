@@ -2,23 +2,47 @@ import * as wss from './wss';
 import store from '../store/store'
 import { setShowOverlay, setMessages } from '../store/actions';
 import { fetchTurnCredentials, getTurnIceServers } from '../utils/turn'
-
+import {getIdentity} from '../utils/apiRequests';
 import Peer from 'simple-peer';
 let localstream;
 let peers = {};
 let streams = [];
-const messengerChannel = "messenger"
-export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null) => {
+const messengerChannel = "messenger";
+// const onlyAudioConstraints = {
 
+//     video: false,
+//     audio: true,
+
+
+// }
+// const defaultConstraints = {
+//     video:
+//     {
+//         frameRate: 30,
+//         noiseSuppression: true,
+//         width: { min: 640, ideal: 1280, max: 1920 },
+//         height: { min: 480, ideal: 720, max: 1080 }
+//     },
+//     // width: '480',
+//     // height: '360',
+
+//     audio: true,
+
+// }
+export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo) => {
+
+
+    //onlyAudio ? onlyAudioConstraints : defaultConstraints;
     await fetchTurnCredentials();
-    const constraits = {
+    const constraits =
+    {
         video: true ? {
             frameRate: 30,
             noiseSuppression: true,
-            // width: { min: 640, ideal: 1280, max: 1920 },
-            // height: { min: 480, ideal: 720, max: 1080 }
-            width: '480',
-            height: '360',
+            width: { min: 640, ideal: 1280, max: 1920 },
+            height: { min: 480, ideal: 720, max: 1080 }
+            // width: '480',
+            // height: '360',
         } : false,
         audio: true,
     }
@@ -26,14 +50,31 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
     //     const devices = await navigator.mediaDevices.enumerateDevices();
     //     return devices.filter(device => device.kind === type)
     // }
-    
+
     // // Get the initial set of cameras connected
     // const videoCameras = getConnectedDevices('videoinput');
 
     navigator.mediaDevices.getUserMedia(constraits)
         .then((stream) => {
+            
             localstream = stream;
-            showLocalVideoPreview(localstream);
+            showLocalVideoPreview(localstream,identity);
+
+            if(!onlyAudio){
+                localstream.getAudioTracks()[0].enabled =  false;
+            }
+            if(!onlyVideo){
+                localstream.getVideoTracks()[0].enabled =  false;
+            }
+            // stream.getTracks().forEach((track) => {
+            //     if(onlyAudio && track.kind === 'audio'){
+            //         localstream.getAudioTracks()[0].enabled =  false;
+            //     }
+            //     if(onlyVideo && track.kind === 'video'){
+            //         localstream.getVideoTracks()[0].enabled =  false;
+            //     }
+            // })
+            
             store.dispatch(setShowOverlay(false));
             isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId)
         })
@@ -43,20 +84,29 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
 
         })
 }
-function showLocalVideoPreview(stream) {
+function showLocalVideoPreview(stream,identity) {
     const videosContainer = document.getElementById('videos_portal');
     videosContainer.classList.add('videos_portal_styles');
     const videoContainer = document.createElement('div');
     videosContainer.classList.add('video_track_container');
     const videoElement = document.createElement('video');
+    const identityElement=document.createElement('p');
+    identityElement.innerHTML=identity;
     videoElement.autoPlay = true;
-    videoElement.muted=true;
+    videoElement.muted = true;
     // videoElement.muted = true;
     videoElement.srcObject = stream;
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     }
     videoContainer.appendChild(videoElement);
+
+    // if (store.getState().connectOnlyWithAudio) {
+    //     videoContainer.appendChild(getAudioOnlyLabel());
+    // }
+    
+    videoContainer.appendChild(identityElement);
+
     videosContainer.appendChild(videoContainer);
 
 
@@ -64,28 +114,30 @@ function showLocalVideoPreview(stream) {
 }
 const getconfiguration = () => {
     const turnIceServers = getTurnIceServers();
+    
 
     turnIceServers.then((server) => {
         return {
             iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' },
+                // { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                 ...server
             ],
         }
 
     })
-    .catch((error) => {
-        console.log('using turn server only',error);
-        return {
-            iceServers:
-                [
-                    { urls: 'stun:stun.l.google.com:19302' },
-                ]
-        }
+        .catch((error) => {
+            console.log('using turn server only', error);
+            return {
+                iceServers:
+                    [
+                        { urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                    ]
+            }
 
-    })
+        })
 
-   
+
 
 
 }
@@ -102,14 +154,14 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
             signal: data,
             connUserSocketId: connUserSocketId
         };
+        // console.log(signalData);
         wss.signalPeerData(signalData);
-
+        
     });
     peers[connUserSocketId].on('stream', (stream) => {
         console.log('new stream', stream);
         // stream.active = true;
         addStream(stream, connUserSocketId);
-
         streams.push(stream)
     });
     peers[connUserSocketId].on('data', (data) => {
@@ -119,12 +171,17 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
 
 
 }
-const addStream = (stream, connUserSocketId) => {
+const addStream = async(stream, connUserSocketId) => {
+
+
+    const name=await getIdentity(connUserSocketId);
     const videosContainer = document.getElementById('videos_portal');
     const videoContainer = document.createElement('div');
     videoContainer.id = connUserSocketId;
     videoContainer.classList.add('video_track_container');
     const videoElement = document.createElement('video');
+    const identityElement=document.createElement('p');
+    identityElement.innerHTML=name;
     videoElement.autPlay = true;
     videoElement.srcObject = stream;
     videoElement.id = `${connUserSocketId}-video`;
@@ -143,7 +200,35 @@ const addStream = (stream, connUserSocketId) => {
     )
 
     videoContainer.appendChild(videoElement);
+    videoContainer.appendChild(identityElement);
+    let flag = false;
+    stream.getTracks().forEach(track => {
+        if (track.kind === 'video') {
+            flag = true;
+        }
+    });
+    if (!flag) {
+        videoContainer.appendChild(getAudioOnlyLabel());
+    }
+    else {
+        videoContainer.style.position = 'static';
+    }
+    
+
     videosContainer.appendChild(videoContainer);
+}
+
+
+function getAudioOnlyLabel() {
+    const labelContainer = document.createElement('div');
+    labelContainer.classList.add('label_only_audio_container');
+    const label = document.createElement('p');
+    label.classList.add('label_only_audio_text');
+    label.innerHTML = "Only Audio";
+    labelContainer.appendChild(label);
+    return labelContainer;
+
+
 }
 export const handleSignalingData = (data) => {
     peers[data.connUserSocketId].signal(data.signal);
@@ -172,8 +257,6 @@ export const removePeerConnection = (data) => {
 }
 export const toggleMic = (isMicMuted) => {
     localstream.getAudioTracks()[0].enabled = isMicMuted ? true : false;
-
-
 }
 export const toggleVideo = (isLocalVideoDisabled) => {
     localstream.getVideoTracks()[0].enabled = isLocalVideoDisabled ? true : false;

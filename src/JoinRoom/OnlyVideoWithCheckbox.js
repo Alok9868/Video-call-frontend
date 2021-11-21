@@ -1,24 +1,23 @@
 import React from 'react'
 // import CheckImg from '../resources/check (1).png'
-import MicIcon from '@mui/icons-material/Mic';
-import MicOffIcon from '@mui/icons-material/MicOff';
-export default function OnlyAudioWithCheckbox({
-    setConnectOnlyWithAudio,
-    connectOnlyWithAudio
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+export default function OnlyVideoWithCheckbox({
+    setConnectOnlyWithVideo,
+    connectOnlyWithVideo
 }) {
-
     const handleConnectionTypeChange = () => {
-        setConnectOnlyWithAudio(!connectOnlyWithAudio)
+        setConnectOnlyWithVideo(!connectOnlyWithVideo)
     }
     return (
         <div className="checkbox_container">
             <div className="checkbox_connection" onClick={handleConnectionTypeChange}>
                 {
-                    connectOnlyWithAudio ? <MicIcon /> :<MicOffIcon />
+                    connectOnlyWithVideo ? <VideocamIcon /> :<VideocamOffIcon />
                 }
             </div>
             <p className="checkbox_container_paragraph">
-                Audio
+                Video 
             </p>
 
         </div>
