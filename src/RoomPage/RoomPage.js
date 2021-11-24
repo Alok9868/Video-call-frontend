@@ -13,34 +13,43 @@ import { useScreenshot } from 'use-react-screenshot'
 import { nanoid } from 'nanoid'
 import html2canvas from 'html2canvas'
 
-function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo }) {
+function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo ,streams,socketId}) {
 
-    // const [screenCapture, setScreenCapture] = useState('');
-    // const ref = createRef(null);
-    // const [image, takeScreenshot] = useScreenshot()
-    // async function getImage ()  { 
-    //     await takeScreenshot(ref.current);
-    //     console.log('====================================');
-    //     console.log(image);
-    //     console.log('====================================');
-    //     handleSave(); 
+    const [screenCapture, setScreenCapture] = useState('');
+    const ref = createRef(null);
+    const [image, takeScreenshot] = useScreenshot();
+    async function getImage ()  { 
+       const a= await takeScreenshot(ref.current);
+        // console.log(image);
+        console.log(a);
+        // handleSave(); 
     
-    // }
-    function getImage (){
-        html2canvas(document.getElementById('videos_portal')).then(canvas => 
-            console.log(canvas.toDataURL())
-          ) 
     }
-
-    //  const  handleSave = () => {
-    //     const screenCaptureSource = image;
+    // const getImage = () => await takeScreenshot(ref.current);
+    // function getImage (){
+    //     html2canvas(document.getElementById('grandfather')).then(canvas => {
+    //         const screenCaptureSource = canvas.toDataURL();
     //     const downloadLink = document.createElement('a');
     //     let fileName = nanoid();
     //      fileName = fileName+ 'react-screen-capture.png';
     //     downloadLink.href = screenCaptureSource;
     //     downloadLink.download = fileName;
     //     downloadLink.click();
-    //   };
+
+    //     } 
+            
+    //       ) 
+    // }
+
+     const  handleSave = () => {
+        const screenCaptureSource = image;
+        const downloadLink = document.createElement('a');
+        let fileName = nanoid();
+         fileName = fileName+ 'react-screen-capture.png';
+        downloadLink.href = screenCaptureSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+      };
     useEffect(() => {
         if (!isRoomHost && !roomId) {
             const siteURL = window.location.origin;
@@ -52,19 +61,23 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
                 identity,
                 roomId,
                 connectOnlyWithAudio,
-                connectOnlyWithVideo
+                connectOnlyWithVideo,
+                socketId
             )
         }
 
     }, [])
     return (
        
-        <div className="room_container" >
+        <div className="room_container" ref={ref}>
           <button style={{ marginBottom: '10px' }} onClick={getImage}>
                 Take screenshot
             </button>  
             <ParticipantsSection />
-            <VideoSection />
+            <VideoSection 
+                streams={streams}
+                socketId={socketId}
+            />
             <RoomLabel
                 roomId={roomId}
             />

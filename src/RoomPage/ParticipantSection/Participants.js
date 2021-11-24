@@ -62,7 +62,12 @@ const mapStoreStateToProps = (state) => {
 }
 const mapActionsToProps = (dispatch) => {
     return {
-        setActiveConversationAction: (activeConversation) => {dispatch(setActiveConversation(activeConversation))},
+        setActiveConversationAction: (activeConversation) => {
+        
+            dispatch(setActiveConversation(activeConversation))
+        
+        
+        },
     }
 }
 export default connect(mapStoreStateToProps, mapActionsToProps)(Participants);

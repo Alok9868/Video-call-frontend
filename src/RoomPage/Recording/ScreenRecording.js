@@ -7,23 +7,29 @@ export default function ScreenRecording() {
 
   const [show, setShow] = useState(false);
   async function startRecording() {
+
+   const c=  navigator.mediaDevices.getSupportedConstraints();
+    console.log(c);
+
     await navigator.mediaDevices.getDisplayMedia({
       video: {
-        cursor: 'never',
-        displaySurface: 'monitor',
+        // cursor: 'never',
+        // displaySurface: 'monitor',
         aspectRatio: 1.7777777777777777,
-        frameRate: 60,
-        height: 1080,
-        logicalSurface: true,
-        resizeMode: "crop-and-scale",
-        width: 1920
+        frameRate: 90,
+        height: 2160,
+        // logicalSurface: true,
+        // resizeMode: "crop-and-scale",
+        width: 3840,
+        facingMode: "user" 
       },
       audio: {
         echoCancellation: true,
         sampleRate: 100,
-        volume: 0.0,
+        volume: 1.0,
         restrictOwnAudio:true,
         noiseSuppression: true,
+        autoGainControl: true,
       }
     }).then(async function (stream) {
 
@@ -52,8 +58,8 @@ export default function ScreenRecording() {
         bitsPerSecond: 128000,
         timeSlice: 1000,
         disableLogs: true,
-        frameInterval: 60,
-        video: { width: 1920, height: 1080 },
+        frameInterval: 90,
+        video: { width: 3840, height: 2160 },
         sampleRate: 96000,
 
         // used by StereoAudioRecorder

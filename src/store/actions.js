@@ -9,7 +9,9 @@ const Actions = {
     SET_CONNECT_ONLY_WITH_VIDEO: "SET_CONNECT_ONLY_WITH_VIDEO",
     SET_ACTIVE_CONVERSATION: "SET_ACTIVE_CONVERSATION",
     SET_DIRECT_CHAT_HISTORY: "SET_DIRECT_CHAT_HISTORY",
-    SET_SOCKET_ID: "SET_SOCKET_ID"
+    SET_SOCKET_ID: "SET_SOCKET_ID",
+    SET_STREAMS: "SET_STREAMS",
+    REMOVE_STREAMS: "REMOVE_STREAMS",
 }
 export const setIsRoomHost = (isRoomHost) => {
     return {
@@ -48,28 +50,25 @@ export const setShowOverlay = (showOverlay) => {
         type: Actions.SET_SHOW_OVERLAY,
         showOverlay
     }
-}
+};
 export const setParticipants = (participants) => {
     return {
         type: Actions.SET_PARTICIPANTS,
         participants
     }
-}
+};
 export const setMessages = (messages) => {
     return {
         type: Actions.SET_MESSAGES,
         messages
     }
-}
+};
 export const setActiveConversation = (activeConversation) => {
-    console.log('====================================');
-    console.log(activeConversation);
-    console.log('====================================');
     return {
         type: Actions.SET_ACTIVE_CONVERSATION,
         activeConversation :activeConversation
     }
-}
+};
 export const setDirectChatHistory = (directChatHistory) => {
     return {
         type: Actions.SET_DIRECT_CHAT_HISTORY,
@@ -84,5 +83,18 @@ export const setSocketId = (socketId) => {
         socketId
     }
 
+}
+export const setStreams = (streams) => {
+    return {
+        type: Actions.SET_STREAMS,
+        streams:streams
+    }
+
+}
+export const removeStreams = (socketId) => {
+    return {
+        type: Actions.REMOVE_STREAMS,
+        socketId:socketId
+    }
 }
 export default Actions;
