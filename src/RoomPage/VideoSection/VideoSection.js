@@ -15,18 +15,6 @@ const Container = styled.div`
 export default function VideoSection({setShowChatSection,showChatSection}) {
     return (
         <div className="video_section_container">
-        {/* <Container>
-        {
-            streams.map((stream) => 
-               <SingleVideo 
-                stream={stream}
-                key={stream.socketId}
-                socketId={socketId}
-               />
-            )
-        }
-        </Container> */}
-            {/* <SingleVideo /> */}
             <VideoButtons 
                 setShowChatSection={setShowChatSection}
                 showChatSection={showChatSection}

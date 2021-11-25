@@ -84,7 +84,9 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
                 roomId={roomId}
             />
             {
-                showChatSection ? <ChatSection /> :" "
+                showChatSection ? <ChatSection 
+                    setShowChatSection={setShowChatSection}
+                /> :" "
             }
             
             {showOverlay && <Overlay />}

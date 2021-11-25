@@ -14,7 +14,8 @@ export default function ChatLabel({setShowChatSection}) {
 
     return (
         <div >
-        <p  >CHAT</p>
+        <p>CHAT</p>
+        <button onClick={close}  > Close </button>
         <div onClick={close}><CloseIcon  /> </div>
       </div>
     )
