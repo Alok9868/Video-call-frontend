@@ -8,7 +8,7 @@ const initState = {
     participants: [],
     messages: [],
     connectOnlyWithVideo: true,
-    activeConversation: {},
+    activeConversation: null,
     directChatHistory: [],
     socketId: null,
     streams: [],

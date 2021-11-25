@@ -6,7 +6,7 @@ export default function ConnectingButtons() {
 
     const userid = cookie.load('userid');
     let navigate = useNavigate();
-
+    
     const pushToJoinRoomPage = () => {
 
         if (userid) {

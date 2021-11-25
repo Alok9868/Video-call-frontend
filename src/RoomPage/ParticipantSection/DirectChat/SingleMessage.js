@@ -6,7 +6,6 @@ export default function SingleMessage({ isAuthor, messageContent }) {
     const containerStyling = isAuthor ? 'direct_message_container_author' : 'direct_message_container_reciever';
     return (
         <div className={containerStyling}>
-
             <p className={messageStyling}>{messageContent}</p>
         </div>
     )

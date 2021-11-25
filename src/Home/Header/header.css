@@ -16,6 +16,28 @@
     height: 70px;
     cursor: pointer;
 }
+/* .user-avatar{
+    cursor: pointer;
+} */
+.auto-btn{
+    background-color: rgba(255,195,30) !important;
+    color: black !important;
+}
+.user-auth-box{
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
 .user-avatar{
     cursor: pointer;
+    margin-bottom: 10px;
+}
+.user-name-date{
+    color:white;
+    margin: 0px;
 }

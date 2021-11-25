@@ -8,7 +8,7 @@ let socket=null;
 export const connectWithSocketIOServer = ()=>{
     socket=io(Server);
     socket.on('connect',()=>{
-        console.log('successfully connected with socket io server');
+        console.log('successfully connected with socket io server',socket.id);
         store.dispatch(setSocketId(socket.id));
     });
     socket.on('room-id',(data)=>{

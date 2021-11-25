@@ -68,11 +68,10 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
 
     }, [])
     return (
-       
         <div className="room_container" ref={ref}>
-          <button style={{ marginBottom: '10px' }} onClick={getImage}>
+          {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
                 Take screenshot
-            </button>  
+            </button>   */}
             <ParticipantsSection />
             <VideoSection 
                 streams={streams}

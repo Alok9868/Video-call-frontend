@@ -1,6 +1,6 @@
 import * as wss from './wss';
 import store from '../store/store'
-import { setShowOverlay, setMessages, setStreams, removeStreams } from '../store/actions';
+import { setShowOverlay, setMessages } from '../store/actions';
 import { fetchTurnCredentials, getTurnIceServers } from '../utils/turn'
 import { getIdentity } from '../utils/apiRequests';
 import Peer from 'simple-peer';
@@ -56,24 +56,14 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             if (!onlyVideo) {
                 localstream.getVideoTracks()[0].enabled = false;
             }
-            const newStream = {
-                socketId: socketId,
-                stream: localstream
-            }
+            // const newStream = {
+            //     socketId: socketId,
+            //     stream: localstream
+            // }
             // streams.push(newStream);
             // allstreams.push(newStream);
-            store.dispatch(setStreams(newStream));
-            // showLocalVideoPreview(localstream,identity,socketId);
-
-            
-            // stream.getTracks().forEach((track) => {
-            //     if(onlyAudio && track.kind === 'audio'){
-            //         localstream.getAudioTracks()[0].enabled =  false;
-            //     }
-            //     if(onlyVideo && track.kind === 'video'){
-            //         localstream.getVideoTracks()[0].enabled =  false;
-            //     }
-            // })
+            // store.dispatch(setStreams(newStream));
+            showLocalVideoPreview(localstream,identity);
 
             store.dispatch(setShowOverlay(false));
             isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId)
@@ -84,38 +74,111 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
 
         })
 }
-function showLocalVideoPreview(stream, identity, socketId) {
+function showLocalVideoPreview(stream, identity) {
+
+    // 
+    // videoElement.autoPlay = true;
+    // videoElement.muted = true;
+    // // videoElement.muted = true;
+    // videoElement.srcObject = stream;
+    // videoElement.onloadedmetadata = () => {
+    //     videoElement.play();
+    // }
+    // videoContainer.appendChild(videoElement);
+
+    // // if (store.getState().connectOnlyWithAudio) {
+    // //     videoContainer.appendChild(getAudioOnlyLabel());
+    // // }
+
+    // videoContainer.appendChild(identityElement);
+
+    // videosContainer.appendChild(videoContainer);
 
 
 
 
+
+
+    ////////////////////////////////////////////////////////////////////////
+
+    const videosContainer = document.getElementById("videos_portal");
+  videosContainer.classList.add("videos_portal_styles");
+  const videoContainer = document.createElement("div");
+  videoContainer.classList.add("video_track_container");
+  const videoElement = document.createElement("video");
+  const identityElement = document.createElement('p');
+    identityElement.innerHTML = identity;
+  videoElement.autoplay = true;
+  videoElement.muted = true;
+  videoElement.srcObject = stream;
+
+  videoElement.onloadedmetadata = () => {
+    videoElement.play();
+  };
+
+  videoContainer.appendChild(videoElement);
+
+  if (! store.getState().connectOnlyWithAudio) {
+    videoContainer.appendChild(getAudioOnlyLabel());
+  }
+
+  videosContainer.appendChild(videoContainer);
+
+}
+
+
+const addStream = async (stream, connUserSocketId) => {
+    const name = await getIdentity(connUserSocketId);
     const videosContainer = document.getElementById('videos_portal');
-    videosContainer.classList.add('videos_portal_styles');
     const videoContainer = document.createElement('div');
-    videosContainer.classList.add('video_track_container');
+    videoContainer.id = connUserSocketId;
+    videoContainer.classList.add('video_track_container');
     const videoElement = document.createElement('video');
     const identityElement = document.createElement('p');
-    identityElement.innerHTML = identity;
-    videoElement.autoPlay = true;
-    videoElement.muted = true;
-    // videoElement.muted = true;
+    identityElement.innerHTML = name;
+    videoElement.autPlay = true;
     videoElement.srcObject = stream;
+    videoElement.id = `${connUserSocketId}-video`;
+
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     }
-    videoContainer.appendChild(videoElement);
+    videoElement.addEventListener('click', () => {
+        if (videoElement.classList.contains('full_screen')) {
+            videoElement.classList.remove('full_screen');
+        }
+        else {
+            videoElement.classList.add('full_screen');
+        }
+    }
+    )
 
-    // if (store.getState().connectOnlyWithAudio) {
+    videoContainer.appendChild(videoElement);
+    videoContainer.appendChild(identityElement);
+    const participants = store.getState().participants;
+    const participant = participants.find((p) => p.socketId === connUserSocketId);
+    // let flag = false;
+    // stream.getTracks().forEach(track => {
+    //     if (track.kind === 'video') {
+    //         flag = true;
+    //     }
+    // });
+    // if (!flag) {
     //     videoContainer.appendChild(getAudioOnlyLabel());
     // }
+    // else {
+    //     videoContainer.style.position = 'static';
+    // }
 
-    videoContainer.appendChild(identityElement);
+    if (participant?.onlyAudio) {
+        videoContainer.appendChild(getAudioOnlyLabel(participant.identity));
+      } else {
+        videoContainer.style.position = "static";
+      }
 
     videosContainer.appendChild(videoContainer);
-
-
-
 }
+
 const getconfiguration = () => {
     const turnIceServers = getTurnIceServers();
 
@@ -164,70 +227,14 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     });
     peers[connUserSocketId].on('stream', (stream) => {
         console.log('new stream', stream);
-        // stream.active = true;
-        console.log('====================================');
-        console.log(connUserSocketId);
-        console.log('====================================');
-        const newStream = {
-            socketId: connUserSocketId,
-            stream: stream,
-        }
-        allstreams.push(newStream);
-        store.dispatch(setStreams(newStream));
-        // addStream(stream, connUserSocketId);
-        // streams.push(newStream)
+        addStream(stream, connUserSocketId);
+        streams.push(stream)
     });
     peers[connUserSocketId].on('data', (data) => {
         const messageData = JSON.parse(data);
         appendNewMessage(messageData);
     })
 
-}
-const addStream = async (stream, connUserSocketId) => {
-
-
-    const name = await getIdentity(connUserSocketId);
-    const videosContainer = document.getElementById('videos_portal');
-    const videoContainer = document.createElement('div');
-    videoContainer.id = connUserSocketId;
-    videoContainer.classList.add('video_track_container');
-    const videoElement = document.createElement('video');
-    const identityElement = document.createElement('p');
-    identityElement.innerHTML = name;
-    videoElement.autPlay = true;
-    videoElement.srcObject = stream;
-    videoElement.id = `${connUserSocketId}-video`;
-
-    videoElement.onloadedmetadata = () => {
-        videoElement.play();
-    }
-    videoElement.addEventListener('click', () => {
-        if (videoElement.classList.contains('full_screen')) {
-            videoElement.classList.remove('full_screen');
-        }
-        else {
-            videoElement.classList.add('full_screen');
-        }
-    }
-    )
-
-    videoContainer.appendChild(videoElement);
-    videoContainer.appendChild(identityElement);
-    let flag = false;
-    stream.getTracks().forEach(track => {
-        if (track.kind === 'video') {
-            flag = true;
-        }
-    });
-    if (!flag) {
-        videoContainer.appendChild(getAudioOnlyLabel());
-    }
-    else {
-        videoContainer.style.position = 'static';
-    }
-
-
-    videosContainer.appendChild(videoContainer);
 }
 
 
@@ -246,28 +253,31 @@ export const handleSignalingData = (data) => {
     peers[data.connUserSocketId].signal(data.signal);
 }
 export const removePeerConnection = (data) => {
-    const { socketId } = data;
 
     // const newstreams = streams.filter(stream => socketId !== stream.socketId);
-    store.dispatch(removeStreams(socketId));
+    // store.dispatch(removeStreams(socketId));
     // console.log(newstreams);
     // store.dispatch(removeStreams(newstreams));
-    if (peers[socketId]) {
+  
+    const { socketId } = data;
+    const videoContainer = document.getElementById(socketId);
+    const videoEl = document.getElementById(`${socketId}-video`);
+  
+    if (videoContainer && videoEl) {
+      const tracks = videoEl.srcObject.getTracks();
+  
+      tracks.forEach((t) => t.stop());
+  
+      videoEl.srcObject = null;
+      videoContainer.removeChild(videoEl);
+  
+      videoContainer.parentNode.removeChild(videoContainer);
+  
+      if (peers[socketId]) {
         peers[socketId].destroy();
+      }
+      delete peers[socketId];
     }
-    delete peers[socketId];
-    // const videoContainer = document.getElementById(socketId);
-    // const videoElement = document.getElementById(`${socketId}-video`);
-    // if (videoContainer && videoElement) {
-    //     const tracks = videoElement.srcObject.getTracks();
-    //     tracks.forEach(track => track.stop());
-    //     videoElement.srcObject = null;
-    //     videoContainer.removeChild(videoElement);
-    //     videoContainer.parentNode.removeChild(videoContainer);
-    //    
-
-    // }
-
 
 
 }

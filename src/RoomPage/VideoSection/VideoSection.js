@@ -15,7 +15,7 @@ const Container = styled.div`
 export default function VideoSection({streams,socketId}) {
     return (
         <div className="video_section_container">
-        <Container>
+        {/* <Container>
         {
             streams.map((stream) => 
                <SingleVideo 
@@ -25,7 +25,7 @@ export default function VideoSection({streams,socketId}) {
                />
             )
         }
-        </Container>
+        </Container> */}
             {/* <SingleVideo /> */}
             <VideoButtons />
         </div>

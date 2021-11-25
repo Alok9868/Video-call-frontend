@@ -11,9 +11,7 @@ export default function NewMessage({ activeConversation, identity }) {
         }
     }
     function sendMessage() {
-
         setMessage('');
-
     }
 
 
@@ -31,7 +29,6 @@ export default function NewMessage({ activeConversation, identity }) {
                 className="new_message_button "
                 onClick={sendMessage}
             />
-
 
         </div>
     )

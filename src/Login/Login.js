@@ -6,11 +6,12 @@ import { signInWithPopup } from "firebase/auth";
 import Home from '../Home/Home';
 import {setIdentity} from '../store/actions'
 import store from '../store/store'
+import { async } from '@firebase/util';
 function Login() {
   const [userid, setuserid] = useState(cookie.load('userid'));
-  function signin() {
-    signInWithPopup(auth, provider)
-      .then((result) => {
+  async function signin() {
+    await signInWithPopup(auth, provider)
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const expires = new Date();
         expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14)

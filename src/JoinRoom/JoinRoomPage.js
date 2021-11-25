@@ -6,13 +6,12 @@ import JoinRoomTitle from './JoinRoomTitle';
 import JoinRoomContent from './JoinRoomContent';
 import './JoinRoomPage.css'
 function JoinRoomPage(props) {
-    const search = useLocation().search;
     const { setIsRoomHostAction, isRoomHost } = props;
+    const search = useLocation().search;
     useEffect(() => {
-
         const isRoomHost = new URLSearchParams(search).get('host');
         if (isRoomHost) {
-            setIsRoomHostAction(true);
+            setIsRoomHostAction(true);   
         }
     }, [])
     return (
