@@ -37,13 +37,23 @@ const Header = ({ signin }) => {
         //         { name ? <button onClick={signout}>Sign out</button> : <button onClick={signin}>Sign in</button>}
         //     </div>
         // </>
+        // <div className="header my-h-flex">
+        //     <h3 className="user-name-date">{d}<br />{name ? <p className="user-name-date">Welcome {name}</p> : " "}</h3>
+        //     <div className="user-auth-box">
+        //         {photoURL ? <Avatar alt="Travis Howard" src={photoURL} className="user-avatar" /> : <Avatar src="/broken-image.jpg" className="user-avatar" />}
+        //         {name ? <Button size="small" onClick={signout} className="auth-btn">Sign out</Button> : <Button size="small" onClick={signin} className="auth-btn">Sign in</Button>}
+        //     </div>
+        // </div>
+        <>
         <div className="header my-h-flex">
-            <h3 className="user-name-date">{d}<br />{name ? <p className="user-name-date">Welcome {name}</p> : " "}</h3>
+            <img src={logo} alt="" className="logo" />
+           <h3 className="user-name-date">{d}<br />{name ? <p className="user-name-date">Welcome {name}</p> : " "}</h3>
             <div className="user-auth-box">
                 {photoURL ? <Avatar alt="Travis Howard" src={photoURL} className="user-avatar" /> : <Avatar src="/broken-image.jpg" className="user-avatar" />}
                 {name ? <Button size="small" onClick={signout} className="auth-btn">Sign out</Button> : <Button size="small" onClick={signin} className="auth-btn">Sign in</Button>}
             </div>
         </div>
+    </>
 
 
 

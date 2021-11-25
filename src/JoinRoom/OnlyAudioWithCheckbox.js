@@ -14,7 +14,7 @@ export default function OnlyAudioWithCheckbox({
         <div className="checkbox_container">
             <div className="checkbox_connection" onClick={handleConnectionTypeChange}>
                 {
-                    connectOnlyWithAudio ? <MicIcon /> :<MicOffIcon />
+                    connectOnlyWithAudio ? <MicIcon className="join-room-icons-size" /> :<MicOffIcon className="join-room-icons-size"/>
                 }
             </div>
             <p className="checkbox_container_paragraph">

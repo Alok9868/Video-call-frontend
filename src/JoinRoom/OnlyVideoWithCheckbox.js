@@ -13,11 +13,11 @@ export default function OnlyVideoWithCheckbox({
         <div className="checkbox_container">
             <div className="checkbox_connection" onClick={handleConnectionTypeChange}>
                 {
-                    connectOnlyWithVideo ? <VideocamIcon /> :<VideocamOffIcon />
+                    connectOnlyWithVideo ? <VideocamIcon className="join-room-icons-size" /> : <VideocamOffIcon className="join-room-icons-size" />
                 }
             </div>
             <p className="checkbox_container_paragraph">
-                Video 
+                Video
             </p>
 
         </div>
