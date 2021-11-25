@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import RecordRTC from 'recordrtc';
 import { saveAs } from 'file-saver';
+import Button from '@mui/material/Button';
 let recorder;
 let localstream, localaudio;
 export default function ScreenRecording() {
 
   const [show, setShow] = useState(false);
   async function startRecording() {
-
-   const c=  navigator.mediaDevices.getSupportedConstraints();
-    console.log(c);
 
     await navigator.mediaDevices.getDisplayMedia({
       video: {
@@ -173,9 +171,12 @@ export default function ScreenRecording() {
 
 
   return <div>
-    <button onClick={startRecording}
+    {/* <button onClick={startRecording}
     > Start Recording</button>
-    {show ? <button onClick={stopRecording}
-    >StopRecording</button> : " "}
+    <button onClick={stopRecording}
+    >StopRecording</button>
+    */}
+    <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button>
+    {show ?<Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> : " "}
   </div>
 }

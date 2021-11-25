@@ -63,7 +63,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             // streams.push(newStream);
             // allstreams.push(newStream);
             // store.dispatch(setStreams(newStream));
-            showLocalVideoPreview(localstream,identity);
+            showLocalVideoPreview(localstream, identity);
 
             store.dispatch(setShowOverlay(false));
             isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId)
@@ -76,53 +76,31 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
 }
 function showLocalVideoPreview(stream, identity) {
 
-    // 
-    // videoElement.autoPlay = true;
-    // videoElement.muted = true;
-    // // videoElement.muted = true;
-    // videoElement.srcObject = stream;
-    // videoElement.onloadedmetadata = () => {
-    //     videoElement.play();
-    // }
-    // videoContainer.appendChild(videoElement);
-
-    // // if (store.getState().connectOnlyWithAudio) {
-    // //     videoContainer.appendChild(getAudioOnlyLabel());
-    // // }
-
-    // videoContainer.appendChild(identityElement);
-
-    // videosContainer.appendChild(videoContainer);
-
-
-
-
-
-
     ////////////////////////////////////////////////////////////////////////
 
     const videosContainer = document.getElementById("videos_portal");
-  videosContainer.classList.add("videos_portal_styles");
-  const videoContainer = document.createElement("div");
-  videoContainer.classList.add("video_track_container");
-  const videoElement = document.createElement("video");
-  const identityElement = document.createElement('p');
+    videosContainer.classList.add("videos_portal_styles");
+    const videoContainer = document.createElement("div");
+    videoContainer.classList.add("video_track_container");
+    const videoElement = document.createElement("video");
+    const identityElement = document.createElement('p');
     identityElement.innerHTML = identity;
-  videoElement.autoplay = true;
-  videoElement.muted = true;
-  videoElement.srcObject = stream;
+    videoElement.autoplay = true;
+    videoElement.muted = true;
+    videoElement.srcObject = stream;
 
-  videoElement.onloadedmetadata = () => {
-    videoElement.play();
-  };
+    videoElement.onloadedmetadata = () => {
+        videoElement.play();
+    };
 
-  videoContainer.appendChild(videoElement);
+    videoContainer.appendChild(videoElement);
+    videoContainer.appendChild(identityElement);
 
-  if (! store.getState().connectOnlyWithAudio) {
-    videoContainer.appendChild(getAudioOnlyLabel());
-  }
+    if (!store.getState().connectOnlyWithAudio) {
+        videoContainer.appendChild(getAudioOnlyLabel());
+    }
 
-  videosContainer.appendChild(videoContainer);
+    videosContainer.appendChild(videoContainer);
 
 }
 
@@ -172,9 +150,9 @@ const addStream = async (stream, connUserSocketId) => {
 
     if (participant?.onlyAudio) {
         videoContainer.appendChild(getAudioOnlyLabel(participant.identity));
-      } else {
+    } else {
         videoContainer.style.position = "static";
-      }
+    }
 
     videosContainer.appendChild(videoContainer);
 }
@@ -258,25 +236,25 @@ export const removePeerConnection = (data) => {
     // store.dispatch(removeStreams(socketId));
     // console.log(newstreams);
     // store.dispatch(removeStreams(newstreams));
-  
+
     const { socketId } = data;
     const videoContainer = document.getElementById(socketId);
     const videoEl = document.getElementById(`${socketId}-video`);
-  
+
     if (videoContainer && videoEl) {
-      const tracks = videoEl.srcObject.getTracks();
-  
-      tracks.forEach((t) => t.stop());
-  
-      videoEl.srcObject = null;
-      videoContainer.removeChild(videoEl);
-  
-      videoContainer.parentNode.removeChild(videoContainer);
-  
-      if (peers[socketId]) {
-        peers[socketId].destroy();
-      }
-      delete peers[socketId];
+        const tracks = videoEl.srcObject.getTracks();
+
+        tracks.forEach((t) => t.stop());
+
+        videoEl.srcObject = null;
+        videoContainer.removeChild(videoEl);
+
+        videoContainer.parentNode.removeChild(videoContainer);
+
+        if (peers[socketId]) {
+            peers[socketId].destroy();
+        }
+        delete peers[socketId];
     }
 
 

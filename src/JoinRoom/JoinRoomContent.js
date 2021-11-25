@@ -70,6 +70,7 @@ function JoinRoomContent(props) {
                 isRoomHost={isRoomHost}
             />
 
+            <div className="icons-join-div">
             <OnlyAudioWithCheckbox
                 setConnectOnlyWithAudio={setConnectOnlyWithAudio}
                 connectOnlyWithAudio={connectOnlyWithAudio}
@@ -78,6 +79,7 @@ function JoinRoomContent(props) {
                 setConnectOnlyWithVideo={setConnectOnlyWithVideo}
                 connectOnlyWithVideo={connectOnlyWithVideo}
             />
+            </div>
             <ErrorMessage errorMessage={errorMessage} />
             <JoinRoomButtons
                 handleJoinRoom={handleJoinRoom}

@@ -18,6 +18,7 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     const [screenCapture, setScreenCapture] = useState('');
     const ref = createRef(null);
     const [image, takeScreenshot] = useScreenshot();
+    const [showChatSection,setShowChatSection]=useState(false);
     async function getImage ()  { 
        const a= await takeScreenshot(ref.current);
         // console.log(image);
@@ -76,11 +77,16 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
             <VideoSection 
                 streams={streams}
                 socketId={socketId}
+                setShowChatSection={setShowChatSection}
+                showChatSection={showChatSection}
             />
             <RoomLabel
                 roomId={roomId}
             />
-            <ChatSection />
+            {
+                showChatSection ? <ChatSection /> :" "
+            }
+            
             {showOverlay && <Overlay />}
         </div>
     )

@@ -21,6 +21,8 @@ code {
   position: absolute;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 #dummy_video_canvas {

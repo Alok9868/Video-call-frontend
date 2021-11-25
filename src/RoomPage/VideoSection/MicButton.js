@@ -16,14 +16,8 @@ import { connect } from 'react-redux'
         onClick={handleMicButtonPressed}
         >
         {
-            isMicMuted ? <MicOffIcon /> :  <MicIcon />
+            isMicMuted ? <MicOffIcon className="cursor" /> :  <MicIcon className="cursor" />
         }
-        {/* <img 
-            src={isMicMuted ?  MicButtonOffImg : MicButtonImg}
-            alt="Mic"
-            
-            className="video_button_image"
-        /> */}
             
         </div>
     )

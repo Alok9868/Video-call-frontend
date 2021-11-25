@@ -1,7 +1,9 @@
 import React ,{useState} from 'react'
 import * as WebRTCHandler from '../../utils/WebRTCHandler';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { connect } from 'react-redux'
  function CameraButton({connectOnlyWithVideo}) {
     const [isLocalVideoDisabled,setIsLocalVideoDisabled]=useState(!connectOnlyWithVideo);
@@ -16,7 +18,7 @@ import { connect } from 'react-redux'
         onClick={handleVideoButtonPressed}
         >
         {
-            isLocalVideoDisabled ? <VideocamOffIcon /> : <VideocamIcon />
+            isLocalVideoDisabled ? <NoPhotographyIcon className="cursor"/> : <PhotoCameraIcon className="cursor"/>
         }
             {/* <img 
                 src={isLocalVideoDisabled ? CameraButtonOffImg :CameraButtonImg }

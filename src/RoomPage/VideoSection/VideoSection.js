@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 
-export default function VideoSection({streams,socketId}) {
+export default function VideoSection({setShowChatSection,showChatSection}) {
     return (
         <div className="video_section_container">
         {/* <Container>
@@ -27,7 +27,11 @@ export default function VideoSection({streams,socketId}) {
         }
         </Container> */}
             {/* <SingleVideo /> */}
-            <VideoButtons />
+            <VideoButtons 
+                setShowChatSection={setShowChatSection}
+                showChatSection={showChatSection}
+
+            />
         </div>
     )
 }
