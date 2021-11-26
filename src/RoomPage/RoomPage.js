@@ -19,6 +19,7 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     const ref = createRef(null);
     const [image, takeScreenshot] = useScreenshot();
     const [showChatSection,setShowChatSection]=useState(false);
+    const [showParticipants,setShowParticipants]=useState(false);
     async function getImage ()  { 
        const a= await takeScreenshot(ref.current);
         // console.log(image);
