@@ -9,14 +9,13 @@ export default function ChatLabel({setShowChatSection}) {
         console.log('====================================');
         setShowChatSection(false);
     }
-    // className="chat_label_container"
-    // className="chat_label_paragraph
-
     return (
-        <div >
-        <p>CHAT</p>
-        <button onClick={close}  > Close </button>
-        <div onClick={close}><CloseIcon  /> </div>
-      </div>
+         <div className="chat_label_container">
+      <p className="chat_label_paragraph">CHAT</p>
+      <CloseIcon 
+        onClick={close} 
+      />
+      <button onClick={close}> close</button>
+    </div>
     )
 }

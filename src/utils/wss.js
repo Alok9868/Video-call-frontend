@@ -40,6 +40,11 @@ export const connectWithSocketIOServer = ()=>{
         console.log('new message come ',data);
         WebRTCHandler.handleNewMessage(data);
 
+    });
+    socket.on('direct-message',(data)=>{ 
+        console.log('====================================');
+        console.log('direct-message come ',data);
+        console.log('====================================');
     })
 
 }
@@ -65,4 +70,7 @@ export const signalPeerData=(data) => {
 export const sendMessage=(message) => {
     socket.emit('send-message',message);
 
+}
+export const sendDirectMessage=(data) => {
+    socket.emit('direct-message',data);
 }

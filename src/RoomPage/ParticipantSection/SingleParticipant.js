@@ -1,6 +1,6 @@
 import React from 'react'
 import store from '../../store/store'
-import setActiveConversation from '../../store/actions'
+import {setActiveConversation} from '../../store/actions'
 function SingleParticipant(props) {
     const {
         lastItem,
@@ -10,17 +10,11 @@ function SingleParticipant(props) {
         socketId
     } = props;
     const handleOpenActiveChatBox = () => {
-
-
-        console.log('====================================');
-        console.log('executed',participant.socketId);
-        console.log('====================================');
         if (participant.socketId !== socketId) {
             // setActiveConversationAction(participant);
             // store.dispatch(setActiveConversation(participant));
             try {
-                console.log('====================================');
-                store.dispatch(setActiveConversation(identity));
+                store.dispatch(setActiveConversation(participant));
             }
             catch (e) {
                 console.log(e);
@@ -28,12 +22,12 @@ function SingleParticipant(props) {
         }
     }
     return <>
-        <button
+        <p
             className="participants_paragraph"
             onClick={handleOpenActiveChatBox}
         >
         {identity}
-        </button>
+        </p>
         {
             !lastItem && <span className="participants_seperator_line"></span>
         }
