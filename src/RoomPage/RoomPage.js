@@ -13,19 +13,19 @@ import { useScreenshot } from 'use-react-screenshot'
 import { nanoid } from 'nanoid'
 import html2canvas from 'html2canvas'
 
-function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo ,streams,socketId}) {
+function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo, streams, socketId }) {
 
     const [screenCapture, setScreenCapture] = useState('');
     const ref = createRef(null);
     const [image, takeScreenshot] = useScreenshot();
-    const [showChatSection,setShowChatSection]=useState(false);
-    const [showParticipants,setShowParticipants]=useState(false);
-    async function getImage ()  { 
-       const a= await takeScreenshot(ref.current);
+    const [showChatSection, setShowChatSection] = useState(false);
+    const [showParticipants, setShowParticipants] = useState(false);
+    async function getImage() {
+        const a = await takeScreenshot(ref.current);
         // console.log(image);
         console.log(a);
         // handleSave(); 
-    
+
     }
     // const getImage = () => await takeScreenshot(ref.current);
     // function getImage (){
@@ -39,19 +39,19 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     //     downloadLink.click();
 
     //     } 
-            
+
     //       ) 
     // }
 
-     const  handleSave = () => {
+    const handleSave = () => {
         const screenCaptureSource = image;
         const downloadLink = document.createElement('a');
         let fileName = nanoid();
-         fileName = fileName+ 'react-screen-capture.png';
+        fileName = fileName + 'react-screen-capture.png';
         downloadLink.href = screenCaptureSource;
         downloadLink.download = fileName;
         downloadLink.click();
-      };
+    };
     useEffect(() => {
         if (!isRoomHost && !roomId) {
             const siteURL = window.location.origin;
@@ -71,25 +71,33 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     }, [])
     return (
         <div className="room_container" ref={ref}>
-          {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
+            {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
                 Take screenshot
             </button>   */}
-            <ParticipantsSection />
-            <VideoSection 
+            {
+                showParticipants ?
+                    <ParticipantsSection
+                        setShowParticipants={setShowParticipants}
+                    /> : " "
+            }
+
+            <VideoSection
                 streams={streams}
                 socketId={socketId}
                 setShowChatSection={setShowChatSection}
                 showChatSection={showChatSection}
+                setShowParticipants={setShowParticipants}
+                showParticipants={showParticipants}
             />
             <RoomLabel
                 roomId={roomId}
             />
             {
-                showChatSection ? <ChatSection 
+                showChatSection ? <ChatSection
                     setShowChatSection={setShowChatSection}
-                /> :" "
+                /> : " "
             }
-            
+
             {showOverlay && <Overlay />}
         </div>
     )

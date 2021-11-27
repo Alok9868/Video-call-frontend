@@ -44,8 +44,9 @@ const constraints =
 }
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
 
+    
+    
     await fetchTurnCredentials();
-
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
 
@@ -56,13 +57,6 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             if (!onlyVideo) {
                 localstream.getVideoTracks()[0].enabled = false;
             }
-            // const newStream = {
-            //     socketId: socketId,
-            //     stream: localstream
-            // }
-            // streams.push(newStream);
-            // allstreams.push(newStream);
-            // store.dispatch(setStreams(newStream));
             showLocalVideoPreview(localstream, identity);
 
             store.dispatch(setShowOverlay(false));
@@ -72,7 +66,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             console.log('error in accessing local stream: ' + err.message);
             // navigate to error in accessing local stream
 
-        })
+        });
 }
 function showLocalVideoPreview(stream, identity) {
 
@@ -159,8 +153,6 @@ const addStream = async (stream, connUserSocketId) => {
 
 const getconfiguration = () => {
     const turnIceServers = getTurnIceServers();
-
-
     turnIceServers.then((server) => {
         return {
             iceServers: [
@@ -298,14 +290,17 @@ const appendNewMessage = (messageData) => {
 
 export const sendMessageUsingDataChannel = (messageContent) => {
     const identity = store.getState().identity;
+    const socketId = store.getState().socketId;
     const localMessageData = {
         content: messageContent,
         identity,
+        socketId
     };
     //  appendNewMessage(localMessageData);
     const messageData = {
         content: messageContent,
-        identity
+        identity, 
+        socketId,
     };
     wss.sendMessage(messageData);
     // const stringifiedMessageData = JSON.stringify(messageData);

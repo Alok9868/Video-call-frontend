@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useRef ,useEffect} from "react";
 import { connect } from "react-redux";
 
 const Message = ({ author, content, sameAuthor, messageCreatedByMe }) => {
@@ -20,23 +20,33 @@ const Message = ({ author, content, sameAuthor, messageCreatedByMe }) => {
   );
 };
 
-const Messages = ({ messages }) => {
+const Messages = ({ messages ,socketId }) => {
+
+
+  const scrollRef=useRef();
+
+  useEffect(() => {
+    scrollRef.current.scrollIntoView({behavior: 'smooth'})
+
+  },[messages])
+
+
   return (
     <div className="messages_container">
       {messages.map((message, index) => {
-        const sameAuthor =
-          index > 0 && message.identity === messages[index - 1].identity;
-
+        const sameAuthor =  index > 0 && message.socketId === messages[index - 1].socketId;
+        const messageCreatedByMe=socketId === message.socketId;
         return (
           <Message
             key={`${message.content}${index}`}
             author={message.identity}
             content={message.content}
             sameAuthor={sameAuthor}
-            messageCreatedByMe={message.messageCreatedByMe}
+            messageCreatedByMe={messageCreatedByMe}
           />
         );
       })}
+      <div ref={scrollRef} ></div>
     </div>
   );
 };

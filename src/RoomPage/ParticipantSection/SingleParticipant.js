@@ -11,8 +11,6 @@ function SingleParticipant(props) {
     } = props;
     const handleOpenActiveChatBox = () => {
         if (participant.socketId !== socketId) {
-            // setActiveConversationAction(participant);
-            // store.dispatch(setActiveConversation(participant));
             try {
                 store.dispatch(setActiveConversation(participant));
             }

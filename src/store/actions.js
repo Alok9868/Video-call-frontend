@@ -72,7 +72,7 @@ export const setActiveConversation = (activeConversation) => {
 export const setDirectChatHistory = (directChatHistory) => {
     return {
         type: Actions.SET_DIRECT_CHAT_HISTORY,
-        directChatHistory
+        directChatHistory 
 
     }
 

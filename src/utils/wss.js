@@ -3,6 +3,7 @@ import store from '../store/store'
 import * as WebRTCHandler from './WebRTCHandler'
 import {setRoomId ,setParticipants, setSocketId} from '../store/actions'
 import {server} from '../baseurl';
+import {appendNewMessage} from './DirectMessages'
 const Server=server;
 let socket=null;
 export const connectWithSocketIOServer = ()=>{
@@ -39,12 +40,10 @@ export const connectWithSocketIOServer = ()=>{
     socket.on('new-message',(data)=>{
         console.log('new message come ',data);
         WebRTCHandler.handleNewMessage(data);
-
     });
     socket.on('direct-message',(data)=>{ 
-        console.log('====================================');
-        console.log('direct-message come ',data);
-        console.log('====================================');
+        console.log('new direct message come ',data);
+        appendNewMessage(data);
     })
 
 }

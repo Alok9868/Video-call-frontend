@@ -73,11 +73,6 @@ const reducer = (state = initState, action) => {
                 ...state,
                 streams:newStream
             }
-        // case Actions.SET_ACTIVE_CONVERSATION:
-        //     return {
-        //         ...state,
-        //         activeConversation: action.activeConversation
-        //     };
         case Actions.SET_DIRECT_CHAT_HISTORY:
             return {
                 ...state,

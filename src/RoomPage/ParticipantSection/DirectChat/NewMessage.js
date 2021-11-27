@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import * as wss from '../../../utils/wss'
 
-export default function NewMessage({ activeConversation, identity }) {
+export default function  NewMessage({ activeConversation, identity }) {
 
     const [message, setMessage] = useState('');
     function handleKeyPress(e) {
@@ -12,12 +12,12 @@ export default function NewMessage({ activeConversation, identity }) {
         }
     }
     function sendMessage() {
-        setMessage('');
         wss.sendDirectMessage({
             recieverSocketId: activeConversation.socketId,
             identity: identity,
             messageContent: message
         })
+        setMessage('');
     }
 
 

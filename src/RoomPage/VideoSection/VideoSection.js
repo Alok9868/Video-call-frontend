@@ -12,12 +12,14 @@ const Container = styled.div`
 `;
 
 
-export default function VideoSection({setShowChatSection,showChatSection}) {
+export default function VideoSection({setShowChatSection,showChatSection,setShowParticipants,showParticipants}) {
     return (
         <div className="video_section_container">
             <VideoButtons 
                 setShowChatSection={setShowChatSection}
                 showChatSection={showChatSection}
+                setShowParticipants={setShowParticipants}
+                showParticipants={showParticipants}
 
             />
         </div>
