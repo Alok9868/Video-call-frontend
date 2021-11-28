@@ -4,6 +4,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import NoPhotographyIcon from '@mui/icons-material/NoPhotography';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import Tooltip from '@mui/material/Tooltip';
 import { connect } from 'react-redux'
  function CameraButton({connectOnlyWithVideo}) {
     const [isLocalVideoDisabled,setIsLocalVideoDisabled]=useState(!connectOnlyWithVideo);
@@ -18,7 +19,15 @@ import { connect } from 'react-redux'
         onClick={handleVideoButtonPressed}
         >
         {
-            isLocalVideoDisabled ? <NoPhotographyIcon className="cursor"/> : <PhotoCameraIcon className="cursor"/>
+            isLocalVideoDisabled ?
+            <Tooltip title="Camera on" placement="top">
+                        <NoPhotographyIcon className="cursor"/>
+                    </Tooltip> 
+              : 
+              <Tooltip title="Camera off" placement="top">
+                        <PhotoCameraIcon className="cursor"/>
+                    </Tooltip> 
+             
         }
             {/* <img 
                 src={isLocalVideoDisabled ? CameraButtonOffImg :CameraButtonImg }

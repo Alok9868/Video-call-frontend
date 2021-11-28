@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import RecordRTC from 'recordrtc';
 import { saveAs } from 'file-saver';
-import Button from '@mui/material/Button';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import './recording.css';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+
 let recorder;
 let localstream, localaudio;
 export default function ScreenRecording() {
@@ -176,7 +180,9 @@ export default function ScreenRecording() {
     <button onClick={stopRecording}
     >StopRecording</button>
     */}
-    <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button>
-    {show ?<Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> : " "}
+    <VideocamIcon onClick={startRecording} className="record-screen-off" />
+    {/* <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button> */}
+    {/* <Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> */}
+    {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on" />: " "}
   </div>
 }

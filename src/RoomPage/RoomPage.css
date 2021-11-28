@@ -6,23 +6,28 @@
 
 .chat_section_container {
   height: 100%;
-  width: 20%;
+  width: 305px;
   background-color: white;
   display: flex;
   flex-direction: column;
+  z-index: 999;
+  background-color: #E8E8CC;
 }
 
 .chat_label_container {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+  /* background-color: red; */
 }
 
 .chat_label_paragraph {
   font-weight: 700;
   color: #9ca5ab;
-  margin-left: 40px;
   font-size: 16px;
+  margin: 0px 0px 0px 90px;
 }
 
 .new_message_container {
@@ -32,6 +37,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+ 
 }
 
 .new_message_input {
@@ -40,8 +46,9 @@
   padding: 0 50px 0px 20px;
   height: 60px;
   font-size: 16px;
-  width: 80%;
+  width: 90%;
   box-shadow: 2px 20px 5px rgba(0, 82, 201, 0.05);
+  margin-right: 15px;
 }
 
 .new_message_textarea:focus {
@@ -51,6 +58,12 @@
 .new_message_button {
   position: absolute;
   right: 10%;
+  cursor: pointer;
+  font-size: 30px !important;
+  
+}
+.new_message_button:hover{
+  color: blue;
 }
 
 .messages_container {
@@ -107,6 +120,7 @@
 ::-webkit-scrollbar {
   width: 5px;
   background: rgba(0, 188, 164, 0.1);
+  position: absolute;
 }
 
 /* Track */
@@ -167,11 +181,15 @@
   transition: 0.5s;
   margin: 0 40px;
   padding: 10px 0px;
+  background-color: #FFCC1D;
+  display: block;
+  padding: 5px;
 }
 
 .participants_paragraph:hover {
-  background-color: #e5e5e5;
-  border-radius: 8px;
+  background-color: dodgerblue;
+  /* border-radius: 8px; */
+  cursor: pointer;
 }
 
 .participants_separator_line {
@@ -185,17 +203,17 @@
 
 .participants_section_container {
   height: 100%;
-  width: 20%;
+  width: 305px;
   background-color: white;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 0px ;
+  left: 0px;
+  z-index: 999;
+  background-color: #E8E8CC;
 }
 
-.participants_label_container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
 
 .participants_label_paragraph {
   font-weight: 700;
@@ -224,7 +242,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   left: 20%;
   bottom: 0;
   background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
@@ -330,15 +348,16 @@
 video {
   width: 98%;
   height: 98%;
+  margin: 0px;
 }
 
 .room_label {
-  position: absolute;
+  position: fixed;
   display: flex;
-  /* width: 100%; */
+  width: 100%;
   justify-content: center;
   z-index: 4;
-  margin-left: 20%;
+  /* margin-left: 20%; */
 }
 
 .room_label_paragraph {
@@ -509,7 +528,7 @@ video {
   justify-content: flex-end;
 }
 
-.direct_message_container_receiver {
+.direct_message_container_reciever {
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -519,7 +538,7 @@ video {
   background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
   float: right;
   border-radius: 8px 8px 0px 8px;
-  padding: 13px;
+  padding: 10px;
   margin-right: 5px;
   color: white;
   display: inline;
@@ -529,11 +548,11 @@ video {
   margin-left: 5px;
 }
 
-.receiver_direct_message {
+.reciever_direct_message {
   border-radius: 8px 8px 8px 0px;
   border: 1px solid #d5deeb;
   background: #ffffff;
-  padding: 13px;
+  padding: 10px;
   float: left;
   margin-left: 5px;
   display: inline;
@@ -541,6 +560,7 @@ video {
   margin-bottom: 5px;
   font-size: 14px;
   margin-right: 5px;
+  
 }
 
 
@@ -569,4 +589,36 @@ video {
 }
 .cursor{
   cursor: pointer;
+}
+.chat-close-icon{
+  margin-right: 30px;
+  font-size: 35px !important;
+  cursor: pointer;
+}
+.chat-close-icon:hover{
+  color: red !important;
+}
+.user-name-video{
+  background-color: red !important;
+  /* font-size: 500px !important; */
+  position:absolute;
+  bottom: 10%;
+  left:10%;
+  height: 30px;
+  width: 250px;
+  color: white;
+}
+
+.video_track_container p {
+  /* background-color: red; */
+  /* font-size: 500px; */
+  position: relative;
+  display: block;
+  bottom: 10%;
+  left:43%;
+  width: 250px;
+  height: 30px;
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
 }

@@ -1,4 +1,5 @@
 import React ,{useState} from 'react';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import * as WebRTCHandler from '../../utils/WebRTCHandler'
 export default function NewMessage() {
    
@@ -37,11 +38,16 @@ export default function NewMessage() {
             type="text"
             onKeyDown={handleKeyPress}
         />
-        <button 
+        {/* <button 
         className="new_message_button"
         alt="New Message"
         onClick={sendMessage}
-        >Submit</button>
+        >Submit</button> */}
+        <SendRoundedIcon 
+        className="new_message_button"
+        alt="New Message"
+        onClick={sendMessage}
+        />
             
         </div>
     )

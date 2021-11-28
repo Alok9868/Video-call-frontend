@@ -18,7 +18,7 @@
     width: 100%;
     position: absolute;
     border: none !important;
-    border-image: !important;
+    border-image: 0 !important;
   }
   
   .crosshairs::before {

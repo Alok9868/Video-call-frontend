@@ -1,0 +1,9 @@
+.record-screen-on{
+    color: red;
+    font-size: 35px !important;
+    cursor: pointer;
+}
+.record-screen-off{
+    font-size: 35px !important;
+    cursor: pointer;
+}

@@ -84,6 +84,8 @@ function showLocalVideoPreview(stream, identity) {
     videoElement.autoplay = true;
     videoElement.muted = true;
     videoElement.srcObject = stream;
+    // identityElement.classList.add('user-name-video');
+
 
     videoElement.onloadedmetadata = () => {
         videoElement.play();
@@ -115,6 +117,7 @@ const addStream = async (stream, connUserSocketId) => {
     videoElement.srcObject = stream;
     videoElement.id = `${connUserSocketId}-video`;
 
+    
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     }

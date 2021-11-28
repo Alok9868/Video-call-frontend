@@ -59,6 +59,7 @@ const Timer = (props) => {
     <input type="text"  onChange={(e)=>{setMin(e.target.value)}} placeholder="Enter minutes"/>
     <input type="text" onChange={(e)=>{setSec(e.target.value)}} placeholder="Enter seconds"/>
     <button onClick={startTimer}>Submit</button>
+    <button onClick={()=>{setAlarm(false)} } >Close</button>
     </>
     : " "}
     

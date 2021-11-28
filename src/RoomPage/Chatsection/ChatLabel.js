@@ -1,5 +1,5 @@
 import React from 'react'
-import CloseIcon from '@mui/icons-material/Close';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 export default function ChatLabel({setShowChatSection}) {
 
@@ -11,11 +11,12 @@ export default function ChatLabel({setShowChatSection}) {
     }
     return (
          <div className="chat_label_container">
-      <p className="chat_label_paragraph">CHAT</p>
-      <CloseIcon 
+      <span className="chat_label_paragraph">PUBLIC CHAT</span>
+      {/* <CloseIcon 
         onClick={close} 
-      />
-      <button onClick={close}> close</button>
+      /> */}
+      <CancelRoundedIcon onClick={close} className="chat-close-icon" />
+      {/* <button onClick={close}> close</button> */}
     </div>
     )
 }

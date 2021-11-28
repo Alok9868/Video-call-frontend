@@ -1,6 +1,7 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import LocalScreenSharingPreview from './LocalScreenSharingPreview';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
+import Tooltip from '@mui/material/Tooltip';
 import * as WebRTCHandler from '../../utils/WebRTCHandler'
 const constraits = {
     audio: false,
@@ -13,33 +14,33 @@ export default function SwitchToScreenSharingButton() {
     const handleScreenShareToggle = async () => {
         if (!isScreenSharingActive) {
             // try {
-                await navigator.mediaDevices.getDisplayMedia(constraits).then((stream) => {
-                    setScreenSharingStream(stream);
-                    WebRTCHandler.toggleScreenShare(isScreenSharingActive, stream);
-                    setIsScreenSharingActive(true);
+            await navigator.mediaDevices.getDisplayMedia(constraits).then((stream) => {
+                setScreenSharingStream(stream);
+                WebRTCHandler.toggleScreenShare(isScreenSharingActive, stream);
+                setIsScreenSharingActive(true);
 
-                    stream.getVideoTracks()[0].onended = function () {
-                        WebRTCHandler.toggleScreenShare(!isScreenSharingActive);
-                        setIsScreenSharingActive(false);
-                        setScreenSharingStream(null);
-                        console.log('screen recording stopped');
-                    };
-                    // setIsScreenSharingActive(!isScreenSharingActive);
-                
-                }).catch((error) => {
-                    console.log('====================================');
-                    console.log('error in screen sharing',error);
-                    console.log('====================================');
-                    return;
-                })
-                
+                stream.getVideoTracks()[0].onended = function () {
+                    WebRTCHandler.toggleScreenShare(!isScreenSharingActive);
+                    setIsScreenSharingActive(false);
+                    setScreenSharingStream(null);
+                    console.log('screen recording stopped');
+                };
+                // setIsScreenSharingActive(!isScreenSharingActive);
+
+            }).catch((error) => {
+                console.log('====================================');
+                console.log('error in screen sharing', error);
+                console.log('====================================');
+                return;
+            })
+
 
             // }
             // catch (err) {
             //     console.log('err occured in screenSharingStream', err);
             // }
             // if (stream) {
-               
+
 
 
             // }
@@ -52,19 +53,16 @@ export default function SwitchToScreenSharingButton() {
             setScreenSharingStream(null);
             // setIsScreenSharingActive(!isScreenSharingActive);
         }
-       
+
     }
 
     return (
         <>
             <div className="video_button_container">
-                {/* <img
-                    src={Switchimg}
-                    onClick={handleScreenShareToggle}
-                    className="video_button_image"
-                    alt="Screen Share"
-                /> */}
-                <ScreenShareIcon className="cursor" onClick={handleScreenShareToggle}/>
+                <Tooltip title="Screen share" placement="top">
+                    <ScreenShareIcon className="cursor" onClick={handleScreenShareToggle} />
+                </Tooltip>
+
             </div>
             {
                 isScreenSharingActive ? <LocalScreenSharingPreview stream={screenSharingStream} /> : ""

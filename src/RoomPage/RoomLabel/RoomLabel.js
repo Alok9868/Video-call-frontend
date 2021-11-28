@@ -6,7 +6,7 @@ import moment from 'moment';
 import Timer from '../timer/Timer';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
 import ScreenshotIcon from '@mui/icons-material/Screenshot';
-export default function RoomLabel({ roomId ,getImage}) {
+export default function RoomLabel({ roomId, getImage }) {
 
     const [time, setTime] = useState(moment().format("LT"));
     const [alarm, setAlarm] = useState(false);
@@ -16,6 +16,12 @@ export default function RoomLabel({ roomId ,getImage}) {
     }, [time]);
     return (
         <div className="room_label">
+        {time.toLocaleString()}
+        {
+                alarm ? <Timer
+                    setAlarm={setAlarm}
+                /> : <AddAlertIcon onClick={() => { setAlarm(true) }} />
+            }
             <p className="room_label_paragraph">ID :{roomId}</p>
             <IconButton
                 color="primary"
@@ -26,22 +32,11 @@ export default function RoomLabel({ roomId ,getImage}) {
             >
                 <ContentCopyIcon />
             </IconButton>
-            {time.toLocaleString()}
-
-            {
-                alarm ? <Timer
-                setAlarm={setAlarm}
-
-                    // initialMinute={1}
-                    // initialSeconds={20}
-
-                /> : <AddAlertIcon onClick={() => { setAlarm(true) }} />
-            }
             <ScreenRecording />
-            <ScreenshotIcon 
+            {/* <ScreenshotIcon
                 onClick={getImage}
 
-            />
+            /> */}
 
         </div>
     )
