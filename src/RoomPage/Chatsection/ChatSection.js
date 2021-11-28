@@ -3,10 +3,10 @@ import ChatLabel from './ChatLabel';
 import Messages from './Messages';
 import NewMessage from './NewMessage';
 
-export default function ChatSection({setShowChatSection}) {
+export default function ChatSection({ setShowChatSection }) {
     return (
         <div className="chat_section_container">
-            <ChatLabel 
+            <ChatLabel
                 setShowChatSection={setShowChatSection}
             />
             <Messages />

@@ -1,8 +1,9 @@
 import * as wss from './wss';
 import store from '../store/store'
-import { setShowOverlay, setMessages } from '../store/actions';
+import { setShowOverlay, setMessages ,setActiveConversation } from '../store/actions';
 import { fetchTurnCredentials, getTurnIceServers } from '../utils/turn'
 import { getIdentity } from '../utils/apiRequests';
+import moment from 'moment';
 import Peer from 'simple-peer';
 let localstream;
 let peers = {};
@@ -77,6 +78,7 @@ function showLocalVideoPreview(stream, identity) {
     const videoContainer = document.createElement("div");
     videoContainer.classList.add("video_track_container");
     const videoElement = document.createElement("video");
+    videoElement.setAttribute("id",'alok');
     const identityElement = document.createElement('p');
     identityElement.innerHTML = identity;
     videoElement.autoplay = true;
@@ -90,9 +92,9 @@ function showLocalVideoPreview(stream, identity) {
     videoContainer.appendChild(videoElement);
     videoContainer.appendChild(identityElement);
 
-    if (!store.getState().connectOnlyWithAudio) {
-        videoContainer.appendChild(getAudioOnlyLabel());
-    }
+    // if (!store.getState().connectOnlyWithAudio) {
+    //     videoContainer.appendChild(getAudioOnlyLabel());
+    // }
 
     videosContainer.appendChild(videoContainer);
 
@@ -101,6 +103,7 @@ function showLocalVideoPreview(stream, identity) {
 
 const addStream = async (stream, connUserSocketId) => {
     const name = await getIdentity(connUserSocketId);
+
     const videosContainer = document.getElementById('videos_portal');
     const videoContainer = document.createElement('div');
     videoContainer.id = connUserSocketId;
@@ -129,25 +132,13 @@ const addStream = async (stream, connUserSocketId) => {
     videoContainer.appendChild(identityElement);
     const participants = store.getState().participants;
     const participant = participants.find((p) => p.socketId === connUserSocketId);
-    // let flag = false;
-    // stream.getTracks().forEach(track => {
-    //     if (track.kind === 'video') {
-    //         flag = true;
-    //     }
-    // });
-    // if (!flag) {
-    //     videoContainer.appendChild(getAudioOnlyLabel());
-    // }
-    // else {
-    //     videoContainer.style.position = 'static';
-    // }
 
-    if (participant?.onlyAudio) {
-        videoContainer.appendChild(getAudioOnlyLabel(participant.identity));
-    } else {
-        videoContainer.style.position = "static";
-    }
-
+    // if (participant?.onlyAudio) {
+    //     videoContainer.appendChild(getAudioOnlyLabel(participant.identity));
+    // } else {
+    //     videoContainer.style.position = "static";
+    // }
+    videoContainer.style.position = "static";
     videosContainer.appendChild(videoContainer);
 }
 
@@ -216,20 +207,18 @@ function getAudioOnlyLabel() {
     label.innerHTML = "Only Audio";
     labelContainer.appendChild(label);
     return labelContainer;
-
-
 }
 export const handleSignalingData = (data) => {
     peers[data.connUserSocketId].signal(data.signal);
 }
 export const removePeerConnection = (data) => {
-
-    // const newstreams = streams.filter(stream => socketId !== stream.socketId);
-    // store.dispatch(removeStreams(socketId));
-    // console.log(newstreams);
-    // store.dispatch(removeStreams(newstreams));
-
     const { socketId } = data;
+    const removeParticipant = store.getState().participants.find((participant) => socketId === participant.socketId);
+    if(store.getState().activeConversation && store.getState().activeConversation.socketId===removeParticipant.socketId)
+    {
+        store.dispatch(setActiveConversation(null));
+    }
+
     const videoContainer = document.getElementById(socketId);
     const videoEl = document.getElementById(`${socketId}-video`);
 
@@ -240,7 +229,6 @@ export const removePeerConnection = (data) => {
 
         videoEl.srcObject = null;
         videoContainer.removeChild(videoEl);
-
         videoContainer.parentNode.removeChild(videoContainer);
 
         if (peers[socketId]) {
@@ -291,16 +279,18 @@ const appendNewMessage = (messageData) => {
 export const sendMessageUsingDataChannel = (messageContent) => {
     const identity = store.getState().identity;
     const socketId = store.getState().socketId;
-    const localMessageData = {
-        content: messageContent,
-        identity,
-        socketId
-    };
+    // const localMessageData = {
+    //     content: messageContent,
+    //     identity,
+    //     socketId,
+    //     
+    // };
     //  appendNewMessage(localMessageData);
     const messageData = {
         content: messageContent,
         identity, 
         socketId,
+        time: moment().format("LT")
     };
     wss.sendMessage(messageData);
     // const stringifiedMessageData = JSON.stringify(messageData);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import * as wss from '../../../utils/wss'
+import moment from 'moment';
 
 export default function  NewMessage({ activeConversation, identity }) {
 
@@ -15,7 +16,8 @@ export default function  NewMessage({ activeConversation, identity }) {
         wss.sendDirectMessage({
             recieverSocketId: activeConversation.socketId,
             identity: identity,
-            messageContent: message
+            messageContent: message,
+            time: moment().format("LT")
         })
         setMessage('');
     }

@@ -23,6 +23,7 @@ export default function MessagesContainer({ messages }) {
                         identity={message.identity}
                         isAuthor={message.isAuthor}
                         key={`${message.messageContent}-${message.identity}-${message.key}`}
+                        time={message.time}
                     />
                     )
 

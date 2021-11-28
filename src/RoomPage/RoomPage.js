@@ -7,11 +7,12 @@ import RoomLabel from './RoomLabel/RoomLabel'
 import * as WebRTCHandler from '../utils/WebRTCHandler'
 import Overlay from './Overlay'
 import { connect } from 'react-redux'
-// import { ScreenCapture } from 'react-screen-capture';
+import { ScreenCapture } from 'react-screen-capture';
 // import ScreenCapture from './screencapture/ScreenCapture';
 import { useScreenshot } from 'use-react-screenshot'
 import { nanoid } from 'nanoid'
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas';
+
 
 function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo, streams, socketId }) {
 
@@ -20,38 +21,46 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     const [image, takeScreenshot] = useScreenshot();
     const [showChatSection, setShowChatSection] = useState(false);
     const [showParticipants, setShowParticipants] = useState(false);
-    async function getImage() {
-        const a = await takeScreenshot(ref.current);
-        // console.log(image);
-        console.log(a);
-        // handleSave(); 
+    // async function getImage() {
+    //     const a = await takeScreenshot(ref.current);
+    //     // console.log(image);
+    //     console.log(a);
+    //     // handleSave(); 
 
-    }
-    // const getImage = () => await takeScreenshot(ref.current);
-    // function getImage (){
-    //     html2canvas(document.getElementById('grandfather')).then(canvas => {
-    //         const screenCaptureSource = canvas.toDataURL();
-    //     const downloadLink = document.createElement('a');
-    //     let fileName = nanoid();
-    //      fileName = fileName+ 'react-screen-capture.png';
-    //     downloadLink.href = screenCaptureSource;
-    //     downloadLink.download = fileName;
-    //     downloadLink.click();
-
-    //     } 
-
-    //       ) 
     // }
-
-    const handleSave = () => {
-        const screenCaptureSource = image;
+    useEffect(() => {
+        window.onpopstate = e => {
+            window.location.reload();
+        }
+    })
+    // const getImage = async() => await takeScreenshot(ref.current);
+    function getImage() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        const video=document.getElementById('alok');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var img_data = canvas.toDataURL('image/jpg');
         const downloadLink = document.createElement('a');
         let fileName = nanoid();
-        fileName = fileName + 'react-screen-capture.png';
-        downloadLink.href = screenCaptureSource;
+         fileName = fileName+ 'react-screen-capture.png';
+        downloadLink.href = img_data;
         downloadLink.download = fileName;
         downloadLink.click();
-    };
+
+        // html2canvas(document.getElementById('grandfather')).then(canvas => {
+        //     const screenCaptureSource = canvas.toDataURL();
+        // const downloadLink = document.createElement('a');
+        // let fileName = nanoid();
+        //  fileName = fileName+ 'react-screen-capture.png';
+        // downloadLink.href = screenCaptureSource;
+        // downloadLink.download = fileName;
+        // downloadLink.click();
+
+        // } 
+
+        //   ) 
+    }
+
     useEffect(() => {
         if (!isRoomHost && !roomId) {
             const siteURL = window.location.origin;
@@ -69,11 +78,7 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
         }
 
     }, [])
-    return (
-        <div className="room_container" ref={ref}>
-            {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
-                Take screenshot
-            </button>   */}
+    return     <div id="room" className="room_container" ref={ref}>
             {
                 showParticipants ?
                     <ParticipantsSection
@@ -91,7 +96,9 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
             />
             <RoomLabel
                 roomId={roomId}
+                getImage={getImage}
             />
+
             {
                 showChatSection ? <ChatSection
                     setShowChatSection={setShowChatSection}
@@ -99,12 +106,13 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
             }
 
             {showOverlay && <Overlay />}
+
         </div>
-    )
+    
 }
 const mapStoreStateToProps = (state) => {
     return {
         ...state,
     }
 }
-export default connect(mapStoreStateToProps)(RoomPage)
+export default connect(mapStoreStateToProps)(RoomPage);

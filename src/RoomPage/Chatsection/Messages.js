@@ -1,7 +1,7 @@
 import React ,{useRef ,useEffect} from "react";
 import { connect } from "react-redux";
 
-const Message = ({ author, content, sameAuthor, messageCreatedByMe }) => {
+const Message = ({ author, content, sameAuthor, messageCreatedByMe ,time}) => {
   const alignClass = messageCreatedByMe
     ? "message_align_right"
     : "message_align_left";
@@ -14,8 +14,8 @@ const Message = ({ author, content, sameAuthor, messageCreatedByMe }) => {
 
   return (
     <div className={`message_container ${alignClass}`}>
-      {!sameAuthor && <p className="message_title">{authorText}</p>}
-      <p className={`message_content ${contentAdditionalStyles}`}>{content}</p>
+      {!sameAuthor && <p className="message_title">{authorText} </p>}
+      <p className={`message_content ${contentAdditionalStyles}`}>{content}    {time} </p>
     </div>
   );
 };
@@ -43,6 +43,7 @@ const Messages = ({ messages ,socketId }) => {
             content={message.content}
             sameAuthor={sameAuthor}
             messageCreatedByMe={messageCreatedByMe}
+            time={message.time}
           />
         );
       })}
