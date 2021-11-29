@@ -1,6 +1,6 @@
 import * as wss from './wss';
 import store from '../store/store'
-import { setShowOverlay, setMessages ,setActiveConversation } from '../store/actions';
+import { setShowOverlay, setMessages, setActiveConversation } from '../store/actions';
 import { fetchTurnCredentials, getTurnIceServers } from '../utils/turn'
 import { getIdentity } from '../utils/apiRequests';
 import moment from 'moment';
@@ -32,18 +32,18 @@ const messengerChannel = "messenger";
 // }
 const constraints =
 {
-    video: true ? {
+    video: {
         frameRate: 30,
         noiseSuppression: true,
-        width: { min: 640, ideal: 1280, max: 1920 },
-        height: { min: 480, ideal: 720, max: 1080 }
-        // width: '480',
-        // height: '360',
-    } : false,
+        // width: { min: 640, ideal: 1280, max: 1920 },
+        // height: { min: 480, ideal: 720, max: 1080 }
+        width: '480',
+        height: '360',
+    },
     audio: true,
 }
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-await fetchTurnCredentials();
+    await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
 
@@ -72,7 +72,7 @@ function showLocalVideoPreview(stream, identity) {
     const videoContainer = document.createElement("div");
     videoContainer.classList.add("video_track_container");
     const videoElement = document.createElement("video");
-    videoElement.setAttribute("id",'alok');
+    videoElement.setAttribute("id", 'alok');
     const identityElement = document.createElement('p');
     identityElement.innerHTML = identity;
     videoElement.autoplay = true;
@@ -111,7 +111,7 @@ const addStream = async (stream, connUserSocketId) => {
     videoElement.srcObject = stream;
     videoElement.id = `${connUserSocketId}-video`;
 
-    
+
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     }
@@ -145,7 +145,8 @@ const getconfiguration = () => {
         return {
             iceServers: [
                 // { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                // { urls: 'stun:stun.l.google.com:19302' },
+                 { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                 ...server
             ],
         }
@@ -156,7 +157,8 @@ const getconfiguration = () => {
             return {
                 iceServers:
                     [
-                        { urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                        // { urls: 'stun:stun.l.google.com:19302' },
+                         { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                     ]
             }
 
@@ -172,6 +174,8 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
         config: configuration,
         initiator: isInitiator,
         stream: localstream,
+        reconnectTimer: 100,
+        iceTransportPolicy: 'relay',
         channelName: messengerChannel,
     });
     peers[connUserSocketId].on('signal', (data) => {
@@ -211,8 +215,7 @@ export const handleSignalingData = (data) => {
 export const removePeerConnection = (data) => {
     const { socketId } = data;
     const removeParticipant = store.getState().participants.find((participant) => socketId === participant.socketId);
-    if(store.getState().activeConversation && store.getState().activeConversation.socketId===removeParticipant.socketId)
-    {
+    if (store.getState().activeConversation && store.getState().activeConversation.socketId === removeParticipant.socketId) {
         store.dispatch(setActiveConversation(null));
     }
 
@@ -285,7 +288,7 @@ export const sendMessageUsingDataChannel = (messageContent) => {
     //  appendNewMessage(localMessageData);
     const messageData = {
         content: messageContent,
-        identity, 
+        identity,
         socketId,
         time: moment().format("LT")
     };
