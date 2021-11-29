@@ -12,6 +12,7 @@ import { ScreenCapture } from 'react-screen-capture';
 import { useScreenshot } from 'use-react-screenshot'
 import { nanoid } from 'nanoid'
 import html2canvas from 'html2canvas';
+import { Navigate } from 'react-router-dom';
 
 
 function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAudio, connectOnlyWithVideo, streams, socketId }) {
@@ -30,7 +31,7 @@ function RoomPage({ isRoomHost, identity, roomId, showOverlay, connectOnlyWithAu
     // }
     useEffect(() => {
         window.onpopstate = e => {
-            window.location.reload();
+            window.location.reload(); 
         }
     })
     // const getImage = async() => await takeScreenshot(ref.current);

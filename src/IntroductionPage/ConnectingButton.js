@@ -1,14 +1,4 @@
-// import React from 'react'
-// import Button from '@mui/material/Button';
 
-// export default function ConnectingButton({createRoomButton, buttonText ,onClickHandler}) {
-//     const buttonClass = createRoomButton ? "create_room_button" : "join_room_button"
-//     return (
-//         <button className={buttonClass} onClick={onClickHandler} >
-//         {buttonText}
-//         </button>
-//     )
-// }
 
 import React from 'react';
 import Button from '@mui/material/Button';
@@ -20,7 +10,7 @@ import KeyboardIcon from '@mui/icons-material/Keyboard';
 
 export default function ConnectingButton({createRoomButton, buttonText ,onClickHandler}) {
 
-    const buttonClass = createRoomButton ? "create_room_button" : "join_room_button"
+    // const buttonClass = createRoomButton ? "create_room_button" : "join_room_button"
     // 
     return (
         <Button variant="contained" onClick={onClickHandler}   className="meet-buttons">

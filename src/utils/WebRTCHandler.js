@@ -8,7 +8,6 @@ import Peer from 'simple-peer';
 let localstream;
 let peers = {};
 let streams = [];
-let allstreams = [];
 const messengerChannel = "messenger";
 // const onlyAudioConstraints = {
 
@@ -44,10 +43,7 @@ const constraints =
     audio: true,
 }
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-
-    
-    
-    await fetchTurnCredentials();
+await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
 
@@ -70,8 +66,6 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
         });
 }
 function showLocalVideoPreview(stream, identity) {
-
-    ////////////////////////////////////////////////////////////////////////
 
     const videosContainer = document.getElementById("videos_portal");
     videosContainer.classList.add("videos_portal_styles");

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import OnlyAudioWithCheckbox from "./OnlyAudioWithCheckbox";
 import OnlyVideoWithCheckbox from "./OnlyVideoWithCheckbox";
 import cookie from 'react-cookies';
+import MyVerticallyCenteredModal from '../modal/Modal'
 
 function JoinRoomContent(props) {
     const {
@@ -24,12 +25,13 @@ function JoinRoomContent(props) {
     const [nameValue, setNameValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showModal1,setShowModal1]=useState(false);
+    function deactive() {
+        setShowModal(false);
+        setShowModal1(false);
+    }
     async function handleJoinRoom() {
-        // joining the room
-        // if (nameValue === '') {
-        //     window.alert('Please enter a valid name');
-        //     return;
-        // }
         setIdentityAction(cookie.load('displayName'));
         if (isRoomHost) {
             createRoom();
@@ -40,20 +42,23 @@ function JoinRoomContent(props) {
     }
 
     const joinRoom = async () => {
+        if (!roomIdValue) {
+            return;
+        }
         const responseMessage = await getRoomExists(roomIdValue);
         const { roomExists, full } = responseMessage;
         if (roomExists) {
             if (full) {
-                setErrorMessage('Room  is full')
+
+                setShowModal(true);
             }
             else {
-                // join room room
                 setRoomIdAction(roomIdValue)
                 navigate('/room');
             }
         }
         else {
-            setErrorMessage('Room Not found')
+            setShowModal1(true);
         }
     }
     const createRoom = () => {
@@ -71,19 +76,29 @@ function JoinRoomContent(props) {
             />
 
             <div className="icons-join-div">
-            <OnlyAudioWithCheckbox
-                setConnectOnlyWithAudio={setConnectOnlyWithAudio}
-                connectOnlyWithAudio={connectOnlyWithAudio}
-            />
-            <OnlyVideoWithCheckbox
-                setConnectOnlyWithVideo={setConnectOnlyWithVideo}
-                connectOnlyWithVideo={connectOnlyWithVideo}
-            />
+                <OnlyAudioWithCheckbox
+                    setConnectOnlyWithAudio={setConnectOnlyWithAudio}
+                    connectOnlyWithAudio={connectOnlyWithAudio}
+                />
+                <OnlyVideoWithCheckbox
+                    setConnectOnlyWithVideo={setConnectOnlyWithVideo}
+                    connectOnlyWithVideo={connectOnlyWithVideo}
+                />
             </div>
             <ErrorMessage errorMessage={errorMessage} />
             <JoinRoomButtons
                 handleJoinRoom={handleJoinRoom}
                 isRoomHost={isRoomHost}
+            />
+            <MyVerticallyCenteredModal
+                show={showModal}
+                onHide={deactive}
+                content="Room is full!"
+            />
+             <MyVerticallyCenteredModal
+                show={showModal1}
+                onHide={deactive}
+                content="Room does not exist!"
             />
         </>
     )

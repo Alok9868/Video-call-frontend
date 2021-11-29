@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import RecordRTC from 'recordrtc';
 import { saveAs } from 'file-saver';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import './recording.css';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
@@ -145,10 +144,7 @@ export default function ScreenRecording() {
 
   function stopRecording() {
     localstream.getTracks().forEach((t) => t.stop());
-
     localaudio.getTracks().forEach((t) => t.stop());
-
-
 
     const getFileName = (fileExtension) => {
       var d = new Date();
@@ -161,10 +157,6 @@ export default function ScreenRecording() {
       let recorderBlob = recorder.getBlob();
       if (recorderBlob) {
         var blob = recorderBlob;
-        // var file = new File([blob], getFileName('mp4'), {
-        //   type: 'video/mp4'
-        // });
-        // RecordRTC.invokeSaveAsDialog(file);
         saveAs(blob, getFileName('mp4'));
       }
     });
