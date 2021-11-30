@@ -150,7 +150,12 @@ const getconfiguration = () => {
                 username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
                 credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
                 urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
-            }]
+            },
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+            ...server,
+            // turn:64.233.165.127:19305?transport=udp
+            ]
         }
 
     })
@@ -159,8 +164,16 @@ const getconfiguration = () => {
             return {
                 iceServers:
                     [
+                        {
+                            urls: ["stun:bn-turn1.xirsys.com"]
+                        },
+                        {
+                            username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
+                            credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
+                            urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+                        },
                         { urls: 'stun:stun.l.google.com:19302' },
-                        //  { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                        { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                     ]
             }
 
