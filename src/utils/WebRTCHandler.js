@@ -37,8 +37,8 @@ const constraints =
         noiseSuppression: true,
         // width: { min: 640, ideal: 1280, max: 1920 },
         // height: { min: 480, ideal: 720, max: 1080 }
-        width: '480',
-        height: '360',
+        width: '640',
+        height: '480',
     },
     audio: true,
 }
@@ -143,12 +143,14 @@ const getconfiguration = () => {
     const turnIceServers = getTurnIceServers();
     turnIceServers.then((server) => {
         return {
-            iceServers: [
-                // { urls: 'stun:stun.l.google.com:19302' },
-                // { urls: 'stun:stun.l.google.com:19302' },
-                 { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
-                ...server
-            ],
+            iceServers: [{
+                urls: ["stun:bn-turn1.xirsys.com"]
+            },
+            {
+                username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
+                credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
+                urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+            }]
         }
 
     })
@@ -157,12 +159,18 @@ const getconfiguration = () => {
             return {
                 iceServers:
                     [
-                        // { urls: 'stun:stun.l.google.com:19302' },
-                         { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        //  { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
                     ]
             }
 
         })
+    // iceServers: [
+    //     // { urls: 'stun:stun.l.google.com:19302' },
+    //     { urls: 'stun:stun.l.google.com:19302' },
+    //     //  { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+    //     ...server
+    // ],
 
 
 
@@ -187,9 +195,8 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
         wss.signalPeerData(signalData);
 
     });
-    peers[connUserSocketId].on('stream', (stream) => {
-        console.log('new stream', stream);
-        addStream(stream, connUserSocketId);
+    peers[connUserSocketId].on('stream', async (stream) => {
+        await addStream(stream, connUserSocketId);
         streams.push(stream)
     });
     peers[connUserSocketId].on('data', (data) => {
