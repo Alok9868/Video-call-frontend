@@ -30,24 +30,23 @@ const messengerChannel = "messenger";
 //     audio: true,
 
 // }
-const constraints =
-{
+const constraints = {
     video: {
-        frameRate: 30,
         noiseSuppression: true,
-        // width: { min: 640, ideal: 1280, max: 1920 },
-        // height: { min: 480, ideal: 720, max: 1080 }
-        width: '640',
-        height: '480',
+        width: '480',
+        height: '360',
+        aspectRatio: 1.777777778,
+        frameRate: { max: 30 },
+        facingMode: { exact: "user" }
     },
-    audio: true,
-}
+    audio: { echoCancellation: true }
+};
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
     await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
-
             localstream = stream;
+
             if (!onlyAudio) {
                 localstream.getAudioTracks()[0].enabled = false;
             }
@@ -107,11 +106,9 @@ const addStream = async (stream, connUserSocketId) => {
     const videoElement = document.createElement('video');
     const identityElement = document.createElement('p');
     identityElement.innerHTML = name;
-    videoElement.autPlay = true;
+    videoElement.autoPlay = true;
     videoElement.srcObject = stream;
     videoElement.id = `${connUserSocketId}-video`;
-
-
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     }
@@ -127,8 +124,8 @@ const addStream = async (stream, connUserSocketId) => {
 
     videoContainer.appendChild(videoElement);
     videoContainer.appendChild(identityElement);
-    const participants = store.getState().participants;
-    const participant = participants.find((p) => p.socketId === connUserSocketId);
+    // const participants = store.getState().participants;
+    // const participant = participants.find((p) => p.socketId === connUserSocketId);
 
     // if (participant?.onlyAudio) {
     //     videoContainer.appendChild(getAudioOnlyLabel(participant.identity));
@@ -143,18 +140,52 @@ const getconfiguration = () => {
     const turnIceServers = getTurnIceServers();
     turnIceServers.then((server) => {
         return {
-            iceServers: [{
-                urls: ["stun:bn-turn1.xirsys.com"]
+            iceServers: [
+                { url: "stun:stun01.sipphone.com" },
+            { url: "stun:stun.ekiga.net" },
+            { url: "stun:stun.fwdnet.net" },
+            { url: "stun:stun.ideasip.com" },
+            { url: "stun:stun.iptel.org" },
+            { url: "stun:stun.rixtelecom.se" },
+            { url: "stun:stun.schlund.de" },
+            { url: "stun:stun.l.google.com:19302" },
+            { url: "stun:stun1.l.google.com:19302" },
+            { url: "stun:stun2.l.google.com:19302" },
+            { url: "stun:stun3.l.google.com:19302" },
+            { url: "stun:stun4.l.google.com:19302" },
+            { url: "stun:stunserver.org" },
+            { url: "stun:stun.softjoys.com" },
+            { url: "stun:stun.voiparound.com" },
+            { url: "stun:stun.voipbuster.com" },
+            { url: "stun:stun.voipstunt.com" },
+            { url: "stun:stun.voxgratia.org" },
+            { url: "stun:stun.xten.com" },
+            {
+              url: "turn:numb.viagenie.ca",
+              credential: "muazkh",
+              username: "webrtc@live.com"
             },
             {
-                username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
-                credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
-                urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+              url: "turn:192.158.29.39:3478?transport=udp",
+              credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+              username: "28224511:1379330808"
             },
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+            {
+              url: "turn:192.158.29.39:3478?transport=tcp",
+              credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+              username: "28224511:1379330808"
+            },
+            {
+              url: "turn:turn.bistri.com:80",
+              credential: "homeo",
+              username: "homeo"
+            },
+            {
+              url: "turn:turn.anyfirewall.com:443?transport=tcp",
+              credential: "webrtc",
+              username: "webrtc"
+            },
             ...server,
-            // turn:64.233.165.127:19305?transport=udp
             ]
         }
 
@@ -174,20 +205,24 @@ const getconfiguration = () => {
                         },
                         { urls: 'stun:stun.l.google.com:19302' },
                         { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
-                        { turn:" 64.233.165.127:19305?transport=udp" },
+                        { turn: " 64.233.165.127:19305?transport=udp" },
                         { turn: "[2A00:1450:4010:C01::7F]:19305?transport=udp" },
-                        { turn : "64.233.165.127:443?transport=tcp"},
-                        {turn : "[2A00:1450:4010:C01::7F]:443?transport=tcp"}
+                        { turn: "64.233.165.127:443?transport=tcp" },
+                        { turn: "[2A00:1450:4010:C01::7F]:443?transport=tcp" }
                     ]
             }
 
         })
-    // iceServers: [
-    //     // { urls: 'stun:stun.l.google.com:19302' },
-    //     { urls: 'stun:stun.l.google.com:19302' },
-    //     //  { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
-    //     ...server
-    // ],
+        // {
+        //     urls: ["stun:bn-turn1.xirsys.com"]
+        // },
+        // {
+        //     username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
+        //     credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
+        //     urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+        // },
+        // { urls: 'stun:stun.l.google.com:19302' },
+        // { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
 
 
 
@@ -200,7 +235,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
         initiator: isInitiator,
         stream: localstream,
         reconnectTimer: 100,
-        iceTransportPolicy: 'relay',
+        // iceTransportPolicy: 'relay',
         channelName: messengerChannel,
     });
     peers[connUserSocketId].on('signal', (data) => {
