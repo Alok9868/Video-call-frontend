@@ -174,6 +174,10 @@ const getconfiguration = () => {
                         },
                         { urls: 'stun:stun.l.google.com:19302' },
                         { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+                        { turn:" 64.233.165.127:19305?transport=udp" },
+                        { turn: "[2A00:1450:4010:C01::7F]:19305?transport=udp" },
+                        { turn : "64.233.165.127:443?transport=tcp"},
+                        {turn : "[2A00:1450:4010:C01::7F]:443?transport=tcp"}
                     ]
             }
 
