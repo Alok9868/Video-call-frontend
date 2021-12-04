@@ -40,7 +40,7 @@ export default function ConnectingButtons() {
             <MyVerticallyCenteredModal
                 show={showModal}
                 onHide={deactive}
-                content="please sign in first To Enter into Meeting Room"
+                content="Please sign in first To Enter into Meeting Room"
             />
         </div>
     )

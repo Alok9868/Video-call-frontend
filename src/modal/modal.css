@@ -1,0 +1,22 @@
+.modal-pop-up{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+ }
+ .modal-close-icon{
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     font-size: 30px !important;
+     cursor: pointer;
+     color: black !important;
+ }
+ .modal-close-icon:hover{
+     color: red !important;
+ }
+ .modal-content{
+     padding: 20px 10px 10px 10px !important;
+     color: white;
+     background-color: dodgerblue !important;
+     font-size: 15px !important;
+ }

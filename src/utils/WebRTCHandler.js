@@ -9,13 +9,7 @@ let localstream;
 let peers = {};
 let streams = [];
 const messengerChannel = "messenger";
-// const onlyAudioConstraints = {
-
-//     video: false,
-//     audio: true,
-
-
-// }
+let sendingstream = null;
 // const defaultConstraints = {
 //     video:
 //     {
@@ -35,7 +29,7 @@ const constraints = {
         noiseSuppression: true,
         width: '480',
         height: '360',
-        aspectRatio: 1.777777778,
+        aspectRatio: 1.33333333333,
         frameRate: { max: 30 },
         facingMode: { exact: "user" }
     },
@@ -46,6 +40,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
             localstream = stream;
+            sendingstream=stream;
 
             if (!onlyAudio) {
                 localstream.getAudioTracks()[0].enabled = false;
@@ -84,6 +79,7 @@ function showLocalVideoPreview(stream, identity) {
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     };
+   
 
     videoContainer.appendChild(videoElement);
     videoContainer.appendChild(identityElement);
@@ -293,7 +289,7 @@ const getconfiguration = async () => {
 const getServerConfig = async () => {
     const turnIceServers = await getTurnIceServers();
     // let returningserver;
-    if (!turnIceServers) {
+    if (turnIceServers) {
         return {
             iceServers: [
                 {
@@ -361,18 +357,16 @@ export const prepareNewPeerConnection = async (connUserSocketId, isInitiator) =>
     const configuration = getServerConfig();
     let serverconfig;
     await configuration.then((server) => {
-        console.log(server);
         serverconfig = server;
-        console.log(serverconfig);
     }).catch((error) => { console.log(error); });
     console.log(serverconfig);
     peers[connUserSocketId] = new Peer({
         initiator: isInitiator,
         config: serverconfig,
-        stream: localstream,
+        // stream: localstream,
+        stream: sendingstream,
         channelName: messengerChannel,
     });
-    console.log(peers);
     peers[connUserSocketId].on('signal', (data) => {
         const signalData = {
             signal: data,
@@ -444,6 +438,7 @@ export const toggleScreenShare = (isScreenSharingActive, screenSharingStream = n
         switchVideoTracks(localstream);
     }
     else {
+        sendingstream=screenSharingStream;
         switchVideoTracks(screenSharingStream)
     }
 

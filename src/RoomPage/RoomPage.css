@@ -67,9 +67,9 @@
 }
 
 .messages_container {
-  width: calc(100% - 70px);
-  margin-left: 30px;
-  margin-right: 30px;
+  width: calc(100% - 20px);
+  margin-left: 10px;
+  margin-right: 10px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -110,10 +110,12 @@
 
 .message_content {
   margin: 0px 10px;
-  padding: 10px 30px 10px 20px;
-  border-radius: 25px;
+  padding: 10px 15px 10px 15px;
+  border-radius: 10px;
   font-size: 16px;
   display: inline-block;
+  position: relative;
+  text-align: start;
 }
 
 /* width */
@@ -582,6 +584,7 @@ video {
  height: 50px !important;
  width: 50px !important;
  color: white !important;
+ margin-bottom: 20px !important;
 }
 .record-screen{
   background-color: tomato !important;
@@ -621,4 +624,33 @@ video {
   color: white;
   font-weight: 600;
   font-size: 20px;
+}
+
+.message-time-display{
+  font-size: 12px !important;
+  position: relative !important;
+  left: 0px;
+  bottom: 0px;
+}
+
+.room-label-center-content{
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+}
+.my-flex{
+  display: flex;
+  justify-content: center;
+}
+
+.live-time{
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.recording-icon{
+  margin-top: 10px !important;
+  margin-right: 20px !important;
 }

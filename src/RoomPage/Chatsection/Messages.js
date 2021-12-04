@@ -1,7 +1,7 @@
-import React ,{useRef ,useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 
-const Message = ({ author, content, sameAuthor, messageCreatedByMe ,time}) => {
+const Message = ({ author, content, sameAuthor, messageCreatedByMe, time }) => {
   const alignClass = messageCreatedByMe
     ? "message_align_right"
     : "message_align_left";
@@ -15,27 +15,34 @@ const Message = ({ author, content, sameAuthor, messageCreatedByMe ,time}) => {
   return (
     <div className={`message_container ${alignClass}`}>
       {!sameAuthor && <p className="message_title">{authorText} </p>}
-      <p className={`message_content ${contentAdditionalStyles}`}>{content}    {time} </p>
+      <div className={`message_content ${contentAdditionalStyles}`}>
+        {content}
+        <div className="message-time-display">
+          {time}
+        </div>
+
+      </div>
+
     </div>
   );
 };
 
-const Messages = ({ messages ,socketId }) => {
+const Messages = ({ messages, socketId }) => {
 
 
-  const scrollRef=useRef();
+  const scrollRef = useRef();
 
   useEffect(() => {
-    scrollRef.current.scrollIntoView({behavior: 'smooth'})
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' })
 
-  },[messages])
+  }, [messages])
 
 
   return (
     <div className="messages_container">
       {messages.map((message, index) => {
-        const sameAuthor =  index > 0 && message.socketId === messages[index - 1].socketId;
-        const messageCreatedByMe=socketId === message.socketId;
+        const sameAuthor = index > 0 && message.socketId === messages[index - 1].socketId;
+        const messageCreatedByMe = socketId === message.socketId;
         return (
           <Message
             key={`${message.content}${index}`}

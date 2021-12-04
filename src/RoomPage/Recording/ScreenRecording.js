@@ -172,9 +172,9 @@ export default function ScreenRecording() {
     <button onClick={stopRecording}
     >StopRecording</button>
     */}
-    <VideocamIcon onClick={startRecording} className="record-screen-off" />
+    <VideocamIcon onClick={startRecording} className="record-screen-off recording-icon" />
     {/* <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button> */}
     {/* <Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> */}
-    {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on" />: " "}
+    {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on recording-icon" />: " "}
   </div>
 }

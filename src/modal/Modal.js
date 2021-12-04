@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal";
-import Button from 'react-bootstrap/Button';
+import './modal.css';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function MyVerticallyCenteredModal(props) {
 
@@ -10,17 +11,21 @@ export default function MyVerticallyCenteredModal(props) {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className="modal-pop-up"
         >
             {/* <Modal.Title id="contained-modal-title-vcenter">
                 sign in AddAlertIcon
             </Modal.Title> */}
-            <Modal.Body >
+            <Modal.Body  >
+                <div className="modal-content">
                 {props.content}
+                </div>
             </Modal.Body>
             <div className="buttons-pop">
-                <Button className="btn btn-secondary close" variant="primary" onClick={props.onHide}>
+                {/* <Button className="btn btn-secondary close" variant="primary" onClick={props.onHide}>
                     Close
-                </Button>
+                </Button> */}
+                <CloseIcon className="modal-close-icon" onClick={props.onHide}/>
             </div>
         </Modal>
     </div>
