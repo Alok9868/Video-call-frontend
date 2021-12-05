@@ -7,19 +7,22 @@ export default function  NewMessage({ activeConversation, identity }) {
 
     const [message, setMessage] = useState('');
     function handleKeyPress(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && message) {
             e.preventDefault();
             sendMessage();
         }
     }
     function sendMessage() {
-        wss.sendDirectMessage({
-            recieverSocketId: activeConversation.socketId,
-            identity: identity,
-            messageContent: message,
-            time: moment().format("LT")
-        })
-        setMessage('');
+        if(message) {
+            wss.sendDirectMessage({
+                recieverSocketId: activeConversation.socketId,
+                identity: identity,
+                messageContent: message,
+                time: moment().format("LT")
+            })
+            setMessage('');
+
+        }
     }
 
 

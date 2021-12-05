@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
+import { nanoid } from 'nanoid'
 
 const Message = ({ author, content, sameAuthor, messageCreatedByMe, time }) => {
   const alignClass = messageCreatedByMe
@@ -45,7 +46,7 @@ const Messages = ({ messages, socketId }) => {
         const messageCreatedByMe = socketId === message.socketId;
         return (
           <Message
-            key={`${message.content}${index}`}
+            key={`${message.content}-${index}`}
             author={message.identity}
             content={message.content}
             sameAuthor={sameAuthor}

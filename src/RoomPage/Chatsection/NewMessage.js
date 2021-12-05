@@ -9,11 +9,11 @@ export default function NewMessage() {
 
     }
     const handleKeyPress=(event) => {
-        if(event.key ==='Enter')
+        if(event.key ==='Enter' && message )
         {
             event.preventDefault();
-            console.log('sending message to other');
-            console.log(message);
+            // console.log('sending message to other');
+            // console.log(message);
             sendMessage();
         }
         
@@ -45,7 +45,6 @@ export default function NewMessage() {
         >Submit</button> */}
         <SendRoundedIcon 
         className="new_message_button"
-        alt="New Message"
         onClick={sendMessage}
         />
             

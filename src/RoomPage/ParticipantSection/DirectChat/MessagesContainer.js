@@ -1,30 +1,25 @@
-import React ,{useEffect ,useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import SingleMessage from './SingleMessage'
 export default function MessagesContainer({ messages }) {
 
-    const scrollRef=useRef()
+    const scrollRef = useRef();
     useEffect(() => {
-
-        if(scrollRef){
-            scrollRef.current.scrollIntoView({behavior: 'smooth'})
-        }
-
-      
+            scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
     return (
         <div className="direct_messages_container">
             {
-                messages.map((message) => {
+                messages.map((message,index) => {
 
                     return (
                         <SingleMessage
-                        messageContent={message.messageContent}
-                        identity={message.identity}
-                        isAuthor={message.isAuthor}
-                        key={`${message.messageContent}-${message.identity}-${message.key}`}
-                        time={message.time}
-                    />
+                            messageContent={message.messageContent}
+                            identity={message.identity}
+                            isAuthor={message.isAuthor}
+                            key={`${message.messageContent}-${message.identity}-${index}`}
+                            time={message.time}
+                        />
                     )
 
                 })

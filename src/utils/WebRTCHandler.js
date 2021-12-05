@@ -36,7 +36,7 @@ const constraints = {
     audio: { echoCancellation: true }
 };
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-    await fetchTurnCredentials();
+   const startingservers= await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
             localstream = stream;

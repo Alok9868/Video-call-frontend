@@ -11,6 +11,7 @@ export default function ScreenRecording() {
 
   const [show, setShow] = useState(false);
   const [showblink,setShowblink] = useState(false);
+  const [message, setMessage] = useState('start recording');
   async function startRecording() {
 
     await navigator.mediaDevices.getDisplayMedia({
@@ -129,6 +130,7 @@ export default function ScreenRecording() {
 
     recorder.startRecording();
     setShow(true);
+    setMessage('stop recording');
     stream.getVideoTracks()[0].onended = function () {
       stopRecording();
       setShow(false);
@@ -153,6 +155,7 @@ export default function ScreenRecording() {
   function stopRecording() {
     localstream.getTracks().forEach((t) => t.stop());
     localaudio.getTracks().forEach((t) => t.stop());
+    setMessage('start recording');
 
     const getFileName = (fileExtension) => {
       var d = new Date();
@@ -193,10 +196,10 @@ export default function ScreenRecording() {
     >StopRecording</button>
     */}
     <div className= {` ${ showblink ? "blink-red-circle" : ""}`}></div>
-    <Tooltip title="screen-recording" placement="top" >
+    <Tooltip title={message}  placement="top" >
     <VideocamIcon 
     onClick={handleClickScreenRecording }
-    className=""
+    className="video-record"
 
       />
     </Tooltip>
