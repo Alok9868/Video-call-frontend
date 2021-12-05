@@ -6,8 +6,7 @@
 
 .chat_section_container {
   height: 100%;
-  width: 305px;
-  background-color: white;
+  width: 20%;
   display: flex;
   flex-direction: column;
   z-index: 999;
@@ -294,8 +293,9 @@
 }
 
 .videos_container {
-  height: 90%;
+  height: 100%;
   width: 100%;
+  /* margin-left: 10px !important; */
   background-color: #f6f9fb;
   position: relative;
   border-radius: 0px 0px 25px 25px;
@@ -309,6 +309,7 @@
 
 .participant {
   flex-grow: 1;
+  margin-right: 100px;
 }
 
 /* .identity {
@@ -431,8 +432,9 @@ video {
 
 .video_section_container {
   height: 100%;
-  width: 70%;
+  width: 80%;
   display: flex;
+  margin-right: -250px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -442,9 +444,16 @@ video {
 .full_screen {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 102%;
   top: 0%;
+  z-index: 99;
   left: 0%;
+  background: rgb(66,133,237);
+background: linear-gradient(90deg, rgba(66,133,237,1) 17%, rgba(6,73,164,0.9923319669664741) 90%);
+}
+.full_screen p{
+  margin-top: 80% !important;
+  margin-left: 45% !important;
 }
 
 .label_only_audio_container {
@@ -613,14 +622,13 @@ video {
 }
 
 .video_track_container p {
-  /* background-color: red; */
-  /* font-size: 500px; */
   position: relative;
   display: block;
-  bottom: 10%;
+  bottom: 5%;
   left:43%;
   width: 250px;
   height: 30px;
+  /* margin-top: 10px; */
   color: white;
   font-weight: 600;
   font-size: 20px;
@@ -653,4 +661,29 @@ video {
 .recording-icon{
   margin-top: 10px !important;
   margin-right: 20px !important;
+  cursor: pointer;
+}
+.full-screen-name-pos{
+  position: absolute !important;
+  /* top: 5px; */
+  bottom:-25px !important;
+  z-index: 999;
+  color: white !important;
+}
+
+.blink-red-circle{
+  animation: blinker 0.5s cubic-bezier(.5, 0, 1, 1) infinite alternate; 
+  height: 5px !important;
+  width: 5px !important;
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  top: 10px;
+  left: 20px; 
+  cursor: pointer;
+}
+
+@keyframes blinker {  
+from { opacity: 1; }
+to { opacity: 0; }
 }

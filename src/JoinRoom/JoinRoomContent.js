@@ -93,12 +93,12 @@ function JoinRoomContent(props) {
             <MyVerticallyCenteredModal
                 show={showModal}
                 onHide={deactive}
-                content="Room is full!"
+                content="Room is full! Please contact the meeting owner"
             />
              <MyVerticallyCenteredModal
                 show={showModal1}
                 onHide={deactive}
-                content="Room does not exist!"
+                content="Room does not exist! Please enter the code correctly"
             />
         </>
     )

@@ -27,20 +27,20 @@ let sendingstream = null;
 const constraints = {
     video: {
         noiseSuppression: true,
-        width: '480',
-        height: '360',
-        aspectRatio: 1.33333333333,
+        width: { min: 640, ideal: 1280, max: 1920 },
+        height: { min: 480, ideal: 720, max: 1080 },
+        aspectRatio: 1.777777778,
         frameRate: { max: 30 },
         facingMode: { exact: "user" }
     },
     audio: { echoCancellation: true }
 };
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-    await fetchTurnCredentials();
+    // await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
             localstream = stream;
-            sendingstream=stream;
+            sendingstream = stream;
 
             if (!onlyAudio) {
                 localstream.getAudioTracks()[0].enabled = false;
@@ -58,7 +58,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             // navigate to error in accessing local stream
 
         });
-    // await fetchTurnCredentials();
+    await fetchTurnCredentials();
 }
 function showLocalVideoPreview(stream, identity) {
 
@@ -67,7 +67,6 @@ function showLocalVideoPreview(stream, identity) {
     const videoContainer = document.createElement("div");
     videoContainer.classList.add("video_track_container");
     const videoElement = document.createElement("video");
-    videoElement.setAttribute("id", 'alok');
     const identityElement = document.createElement('p');
     identityElement.innerHTML = identity;
     videoElement.autoplay = true;
@@ -79,7 +78,8 @@ function showLocalVideoPreview(stream, identity) {
     videoElement.onloadedmetadata = () => {
         videoElement.play();
     };
-   
+
+
 
     videoContainer.appendChild(videoElement);
     videoContainer.appendChild(identityElement);
@@ -112,13 +112,16 @@ const addStream = async (stream, connUserSocketId) => {
     videoElement.addEventListener('click', () => {
         if (videoElement.classList.contains('full_screen')) {
             videoElement.classList.remove('full_screen');
+            identityElement.classList.remove('full-screen-name-pos');
+
+
         }
         else {
             videoElement.classList.add('full_screen');
+            identityElement.classList.add('full-screen-name-pos');
         }
     }
     )
-
     videoContainer.appendChild(videoElement);
     videoContainer.appendChild(identityElement);
     // const participants = store.getState().participants;
@@ -133,161 +136,164 @@ const addStream = async (stream, connUserSocketId) => {
     videosContainer.appendChild(videoContainer);
 }
 
-const getconfiguration = async () => {
-    const turnIceServers = await getTurnIceServers();
-    // { url: "stun:stun01.sipphone.com" },
-    //         { url: "stun:stun.ekiga.net" },
-    //         { url: "stun:stun.fwdnet.net" },
-    //         { url: "stun:stun.ideasip.com" },
-    //         { url: "stun:stun.iptel.org" },
-    //         { url: "stun:stun.rixtelecom.se" },
-    //         { url: "stun:stun.schlund.de" },
-    //         { url: "stun:stun.l.google.com:19302" },
-    //         { url: "stun:stun1.l.google.com:19302" },
-    //         { url: "stun:stun2.l.google.com:19302" },
-    //         { url: "stun:stun3.l.google.com:19302" },
-    //         { url: "stun:stun4.l.google.com:19302" },
-    //         { url: "stun:stunserver.org" },
-    //         { url: "stun:stun.softjoys.com" },
-    //         { url: "stun:stun.voiparound.com" },
-    //         { url: "stun:stun.voipbuster.com" },
-    //         { url: "stun:stun.voipstunt.com" },
-    //         { url: "stun:stun.voxgratia.org" },
-    //         { url: "stun:stun.xten.com" },
-    //         {
-    //           url: "turn:numb.viagenie.ca",
-    //           credential: "muazkh",
-    //           username: "webrtc@live.com"
-    //         },
-    //         {
-    //           url: "turn:192.158.29.39:3478?transport=udp",
-    //           credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-    //           username: "28224511:1379330808"
-    //         },
-    //         {
-    //           url: "turn:192.158.29.39:3478?transport=tcp",
-    //           credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-    //           username: "28224511:1379330808"
-    //         },
-    //         {
-    //           url: "turn:turn.bistri.com:80",
-    //           credential: "homeo",
-    //           username: "homeo"
-    //         },
-    //         {
-    //           url: "turn:turn.anyfirewall.com:443?transport=tcp",
-    //           credential: "webrtc",
-    //           username: "webrtc"
-    // },
-    // turnIceServers.then((server) => {
-    //     console.log(server);
-    //     return {
-    //         iceServers: [
-    //             // { urls: 'stun:stun.l.google.com:19302' },
-    //             // { urls: 'stun:stun1.l.google.com:19302' },
-    //             // { urls: 'stun:stun2.l.google.com:19302' },
-    //             // { urls: 'stun:stun3.l.google.com:19302' },
-    //             // { urls: 'stun:stun4.l.google.com:19302' },
-    //             // {
-    //             //   url: 'turn:turn.bistri.com:80',
-    //             //   credential: 'homeo',
-    //             //   username: 'homeo',
-    //             // },
-    //             // {
-    //             //   url: 'turn:turn.anyfirewall.com:443?transport=tcp',
-    //             //   credential: 'webrtc',
-    //             //   username: 'webrtc',
-    //             // },
-    //         server,
-    //         ]
-    //     }
+// const getconfiguration = async () => {
+//     const turnIceServers = await getTurnIceServers();
+//     // { url: "stun:stun01.sipphone.com" },
+//     //         { url: "stun:stun.ekiga.net" },
+//     //         { url: "stun:stun.fwdnet.net" },
+//     //         { url: "stun:stun.ideasip.com" },
+//     //         { url: "stun:stun.iptel.org" },
+//     //         { url: "stun:stun.rixtelecom.se" },
+//     //         { url: "stun:stun.schlund.de" },
+//     //         { url: "stun:stun.l.google.com:19302" },
+//     //         { url: "stun:stun1.l.google.com:19302" },
+//     //         { url: "stun:stun2.l.google.com:19302" },
+//     //         { url: "stun:stun3.l.google.com:19302" },
+//     //         { url: "stun:stun4.l.google.com:19302" },
+//     //         { url: "stun:stunserver.org" },
+//     //         { url: "stun:stun.softjoys.com" },
+//     //         { url: "stun:stun.voiparound.com" },
+//     //         { url: "stun:stun.voipbuster.com" },
+//     //         { url: "stun:stun.voipstunt.com" },
+//     //         { url: "stun:stun.voxgratia.org" },
+//     //         { url: "stun:stun.xten.com" },
+//     //         {
+//     //           url: "turn:numb.viagenie.ca",
+//     //           credential: "muazkh",
+//     //           username: "webrtc@live.com"
+//     //         },
+//     //         {
+//     //           url: "turn:192.158.29.39:3478?transport=udp",
+//     //           credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+//     //           username: "28224511:1379330808"
+//     //         },
+//     //         {
+//     //           url: "turn:192.158.29.39:3478?transport=tcp",
+//     //           credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+//     //           username: "28224511:1379330808"
+//     //         },
+//     //         {
+//     //           url: "turn:turn.bistri.com:80",
+//     //           credential: "homeo",
+//     //           username: "homeo"
+//     //         },
+//     //         {
+//     //           url: "turn:turn.anyfirewall.com:443?transport=tcp",
+//     //           credential: "webrtc",
+//     //           username: "webrtc"
+//     // },
+//     // turnIceServers.then((server) => {
+//     //     console.log(server);
+//     //     return {
+//     //         iceServers: [
+//     //             // { urls: 'stun:stun.l.google.com:19302' },
+//     //             // { urls: 'stun:stun1.l.google.com:19302' },
+//     //             // { urls: 'stun:stun2.l.google.com:19302' },
+//     //             // { urls: 'stun:stun3.l.google.com:19302' },
+//     //             // { urls: 'stun:stun4.l.google.com:19302' },
+//     //             // {
+//     //             //   url: 'turn:turn.bistri.com:80',
+//     //             //   credential: 'homeo',
+//     //             //   username: 'homeo',
+//     //             // },
+//     //             // {
+//     //             //   url: 'turn:turn.anyfirewall.com:443?transport=tcp',
+//     //             //   credential: 'webrtc',
+//     //             //   username: 'webrtc',
+//     //             // },
+//     //         server,
+//     //         ]
+//     //     }
 
-    // })
-    //     .catch((error) => {
-    //         console.log('using turn server only', error);
-    //         return {
-    //             iceServers:
-    //                 [
-    //                     // {
-    //                     //     urls: ["stun:bn-turn1.xirsys.com"]
-    //                     // },
-    //                     // {
-    //                     //     username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
-    //                     //     credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
-    //                     //     urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
-    //                     // },
-    //                     // { urls: 'stun:stun.l.google.com:19302' },
-    //                     // { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
-    //                     // { turn: " 64.233.165.127:19305?transport=udp" },
-    //                     // { turn: "[2A00:1450:4010:C01::7F]:19305?transport=udp" },
-    //                     // { turn: "64.233.165.127:443?transport=tcp" },
-    //                     // { turn: "[2A00:1450:4010:C01::7F]:443?transport=tcp" }
-    //                 ]
-    //         }
+//     // })
+//     //     .catch((error) => {
+//     //         console.log('using turn server only', error);
+//     //         return {
+//     //             iceServers:
+//     //                 [
+//     //                     // {
+//     //                     //     urls: ["stun:bn-turn1.xirsys.com"]
+//     //                     // },
+//     //                     // {
+//     //                     //     username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
+//     //                     //     credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
+//     //                     //     urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+//     //                     // },
+//     //                     // { urls: 'stun:stun.l.google.com:19302' },
+//     //                     // { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+//     //                     // { turn: " 64.233.165.127:19305?transport=udp" },
+//     //                     // { turn: "[2A00:1450:4010:C01::7F]:19305?transport=udp" },
+//     //                     // { turn: "64.233.165.127:443?transport=tcp" },
+//     //                     // { turn: "[2A00:1450:4010:C01::7F]:443?transport=tcp" }
+//     //                 ]
+//     //         }
 
-    //     })
-    // {
-    //     urls: ["stun:bn-turn1.xirsys.com"]
-    // },
-    // {
-    //     username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
-    //     credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
-    //     urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
-    // },
-    // { urls: 'stun:stun.l.google.com:19302' },
-    // { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+//     //     })
+//     // {
+//     //     urls: ["stun:bn-turn1.xirsys.com"]
+//     // },
+//     // {
+//     //     username: "tvT1RdHwfrPKqkBCX2St3XVIRoVNaXNv5Oyl8g1BoMAZKS0uUD8fADX480NwhjEwAAAAAGF6m7dBbG9r",
+//     //     credential: "1ce53e48-37ed-11ec-9247-0242ac140004",
+//     //     urls: ["turn:bn-turn1.xirsys.com:80?transport=udp", "turn:bn-turn1.xirsys.com:3478?transport=udp", "turn:bn-turn1.xirsys.com:80?transport=tcp", "turn:bn-turn1.xirsys.com:3478?transport=tcp", "turns:bn-turn1.xirsys.com:443?transport=tcp", "turns:bn-turn1.xirsys.com:5349?transport=tcp"]
+//     // },
+//     // { urls: 'stun:stun.l.google.com:19302' },
+//     // { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
 
-    // if (turnIceServers) {
-    //     return {
-    //       iceServers: [
-    //         {
-    //           urls: "stun:stun.l.google.com:19302",
-    //         },
-    //         ...turnIceServers,
-    //       ],
-    //     };
-    //   } else {
-    //     console.warn("Using only STUN server");
-    //     return {
-    //       iceServers: [
-    //         {
-    //           urls: "stun:stun.l.google.com:19302",
-    //         },
-    //       ],
-    //     };
-    //   }
+//     // if (turnIceServers) {
+//     //     return {
+//     //       iceServers: [
+//     //         {
+//     //           urls: "stun:stun.l.google.com:19302",
+//     //         },
+//     //         ...turnIceServers,
+//     //       ],
+//     //     };
+//     //   } else {
+//     //     console.warn("Using only STUN server");
+//     //     return {
+//     //       iceServers: [
+//     //         {
+//     //           urls: "stun:stun.l.google.com:19302",
+//     //         },
+//     //       ],
+//     //     };
+//     //   }
 
-    console.log(turnIceServers);
-    turnIceServers.then((servers) => {
-        const turnserver = {
-            iceServers: [
-                {
-                    urls: "stun:stun.l.google.com:19302",
-                },
-                ...servers,
-            ]
-        }
-        console.log(turnserver);
-        return "hello";
+//     console.log(turnIceServers);
+//     turnIceServers.then((servers) => {
+//         const turnserver = {
+//             iceServers: [
+//                 {
+//                     urls: "stun:stun.l.google.com:19302",
+//                 },
+//                 ...servers,
+//             ]
+//         }
+//         console.log(turnserver);
+//         return "hello";
 
-    }).catch((err) => {
-        console.log('error in getting servers', err);
-        // return {
-        //     iceServers: [
-        //                 {
-        //                   urls: "stun:stun.l.google.com:19302",
-        //                 },
-        //               ]
-        // }
-        return "fuck you";
-    })
+//     }).catch((err) => {
+//         console.log('error in getting servers', err);
+//         // return {
+//         //     iceServers: [
+//         //                 {
+//         //                   urls: "stun:stun.l.google.com:19302",
+//         //                 },
+//         //               ]
+//         // }
+//         return "fuck you";
+//     })
 
 
-}
+// }
 
 
 const getServerConfig = async () => {
     const turnIceServers = await getTurnIceServers();
+    console.log('====================================');
+    console.log(turnIceServers);
+    console.log('====================================');
     // let returningserver;
     if (turnIceServers) {
         return {
@@ -388,15 +394,15 @@ export const prepareNewPeerConnection = async (connUserSocketId, isInitiator) =>
 }
 
 
-function getAudioOnlyLabel() {
-    const labelContainer = document.createElement('div');
-    labelContainer.classList.add('label_only_audio_container');
-    const label = document.createElement('p');
-    label.classList.add('label_only_audio_text');
-    label.innerHTML = "Only Audio";
-    labelContainer.appendChild(label);
-    return labelContainer;
-}
+// function getAudioOnlyLabel() {
+//     const labelContainer = document.createElement('div');
+//     labelContainer.classList.add('label_only_audio_container');
+//     const label = document.createElement('p');
+//     label.classList.add('label_only_audio_text');
+//     label.innerHTML = "Only Audio";
+//     labelContainer.appendChild(label);
+//     return labelContainer;
+// }
 export const handleSignalingData = (data) => {
     peers[data.connUserSocketId].signal(data.signal);
 }
@@ -438,7 +444,7 @@ export const toggleScreenShare = (isScreenSharingActive, screenSharingStream = n
         switchVideoTracks(localstream);
     }
     else {
-        sendingstream=screenSharingStream;
+        sendingstream = screenSharingStream;
         switchVideoTracks(screenSharingStream)
     }
 

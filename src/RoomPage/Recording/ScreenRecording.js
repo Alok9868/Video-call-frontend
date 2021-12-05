@@ -3,13 +3,14 @@ import RecordRTC from 'recordrtc';
 import { saveAs } from 'file-saver';
 import './recording.css';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import Tooltip from '@mui/material/Tooltip';
 
 let recorder;
 let localstream, localaudio;
 export default function ScreenRecording() {
 
   const [show, setShow] = useState(false);
+  const [showblink,setShowblink] = useState(false);
   async function startRecording() {
 
     await navigator.mediaDevices.getDisplayMedia({
@@ -18,10 +19,10 @@ export default function ScreenRecording() {
         // displaySurface: 'monitor',
         aspectRatio: 1.7777777777777777,
         frameRate: 90,
-        height: 2160,
+        height: 1080,
         // logicalSurface: true,
         // resizeMode: "crop-and-scale",
-        width: 3840,
+        width: 1920,
         facingMode: "user" 
       },
       audio: {
@@ -33,7 +34,6 @@ export default function ScreenRecording() {
         autoGainControl: true,
       }
     }).then(async function (stream) {
-
       // {'echoCancellation': true}
       navigator.mediaDevices.getUserMedia({ 'audio': true, }).then((audio) => {
 
@@ -41,19 +41,24 @@ export default function ScreenRecording() {
         localaudio = audio;
 
         screenRecording(stream, audio);
+        add();
       })
         .catch((err) => {
           console.log('error in accessing microphone: ' + err);
           screenRecording(stream);
         })
-    });
+    })
+    .catch((err) => {
+      console.log('====================================');
+      console.log('error',err);
+      console.log('====================================');
+    })
 
   }
 
 
   function screenRecording(stream, audio = null) {
     if (audio) {
-      console.log(stream, audio);
       recorder = RecordRTC([stream, audio], {
         type: 'video',
         bitsPerSecond: 128000,
@@ -90,7 +95,6 @@ export default function ScreenRecording() {
     }
 
     else {
-      console.log(stream, audio);
       recorder = RecordRTC([stream], {
         type: 'video',
         bitsPerSecond: 128000,
@@ -128,6 +132,7 @@ export default function ScreenRecording() {
     stream.getVideoTracks()[0].onended = function () {
       stopRecording();
       setShow(false);
+      setShowblink(false)
     };
 
     // stream.getTracks().forEach((track) => {
@@ -140,6 +145,9 @@ export default function ScreenRecording() {
     //   }, false);
     // });
 
+  }
+  function add(){
+    setShowblink(!showblink);
   }
 
   function stopRecording() {
@@ -160,21 +168,40 @@ export default function ScreenRecording() {
         saveAs(blob, getFileName('mp4'));
       }
     });
+    add();
     setShow(false);
 
+  }
+  function handleClickScreenRecording(){
+    if(!showblink){
+      startRecording();
+    }
+    else{
+      stopRecording();
+    }
   }
 
 
 
-  return <div>
+  // className={`${showblink ? "blink-red-circle  " : " " }`}
+  return  <div  className="recording-icon" >
+  
+   
     {/* <button onClick={startRecording}
     > Start Recording</button>
     <button onClick={stopRecording}
     >StopRecording</button>
     */}
-    <VideocamIcon onClick={startRecording} className="record-screen-off recording-icon" />
+    <div className= {` ${ showblink ? "blink-red-circle" : ""}`}></div>
+    <Tooltip title="screen-recording" placement="top" >
+    <VideocamIcon 
+    onClick={handleClickScreenRecording }
+
+      />
+    </Tooltip>
     {/* <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button> */}
     {/* <Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> */}
-    {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on recording-icon" />: " "}
+    {/* {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on recording-icon" />: " "} */}
   </div>
+  
 }
