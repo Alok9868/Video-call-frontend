@@ -36,7 +36,7 @@ const constraints = {
     audio: { echoCancellation: true }
 };
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-    // await fetchTurnCredentials();
+    await fetchTurnCredentials();
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
             localstream = stream;
@@ -58,7 +58,7 @@ export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roo
             // navigate to error in accessing local stream
 
         });
-    await fetchTurnCredentials();
+    // await fetchTurnCredentials();
 }
 function showLocalVideoPreview(stream, identity) {
 
@@ -291,9 +291,6 @@ const addStream = async (stream, connUserSocketId) => {
 
 const getServerConfig = async () => {
     const turnIceServers = await getTurnIceServers();
-    console.log('====================================');
-    console.log(turnIceServers);
-    console.log('====================================');
     // let returningserver;
     if (turnIceServers) {
         return {

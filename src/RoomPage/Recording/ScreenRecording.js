@@ -196,6 +196,7 @@ export default function ScreenRecording() {
     <Tooltip title="screen-recording" placement="top" >
     <VideocamIcon 
     onClick={handleClickScreenRecording }
+    className=""
 
       />
     </Tooltip>
