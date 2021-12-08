@@ -4,7 +4,6 @@ let TURNIceServers=null;
 
 export const fetchTurnCredentials =async() => {
     const responseData = await api.getTurnCredentials(); 
-    console.log(responseData.token.iceServers);
     if(responseData.responseToken?.iceServers )
     {   
         TURNIceServers=responseData.responseToken.iceServers;

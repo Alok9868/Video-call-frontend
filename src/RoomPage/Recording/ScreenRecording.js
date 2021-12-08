@@ -10,7 +10,7 @@ let localstream, localaudio;
 export default function ScreenRecording() {
 
   const [show, setShow] = useState(false);
-  const [showblink,setShowblink] = useState(false);
+  const [showblink, setShowblink] = useState(false);
   const [message, setMessage] = useState('start recording');
   async function startRecording() {
 
@@ -24,13 +24,13 @@ export default function ScreenRecording() {
         // logicalSurface: true,
         // resizeMode: "crop-and-scale",
         width: 1920,
-        facingMode: "user" 
+        facingMode: "user"
       },
       audio: {
         echoCancellation: true,
         sampleRate: 100,
         volume: 1.0,
-        restrictOwnAudio:true,
+        restrictOwnAudio: true,
         noiseSuppression: true,
         autoGainControl: true,
       }
@@ -49,11 +49,11 @@ export default function ScreenRecording() {
           screenRecording(stream);
         })
     })
-    .catch((err) => {
-      console.log('====================================');
-      console.log('error',err);
-      console.log('====================================');
-    })
+      .catch((err) => {
+        console.log('====================================');
+        console.log('error', err);
+        console.log('====================================');
+      })
 
   }
 
@@ -148,7 +148,7 @@ export default function ScreenRecording() {
     // });
 
   }
-  function add(){
+  function add() {
     setShowblink(!showblink);
   }
 
@@ -175,37 +175,24 @@ export default function ScreenRecording() {
     setShow(false);
 
   }
-  function handleClickScreenRecording(){
-    if(!showblink){
+  function handleClickScreenRecording() {
+    if (!showblink) {
       startRecording();
     }
-    else{
+    else {
       stopRecording();
     }
   }
 
 
+  return <div className="recording-icon" onClick={handleClickScreenRecording}>
+    <div className={` ${showblink ? "blink-red-circle" : ""}`}></div>
+    <Tooltip title={message} placement="top" >
+      <VideocamIcon
 
-  // className={`${showblink ? "blink-red-circle  " : " " }`}
-  return  <div  className="recording-icon" >
-  
-   
-    {/* <button onClick={startRecording}
-    > Start Recording</button>
-    <button onClick={stopRecording}
-    >StopRecording</button>
-    */}
-    <div className= {` ${ showblink ? "blink-red-circle" : ""}`}></div>
-    <Tooltip title={message}  placement="top" >
-    <VideocamIcon 
-    onClick={handleClickScreenRecording }
-    className="video-record"
+        className="video-record"
 
       />
-    </Tooltip>
-    {/* <Button variant="contained" onClick={startRecording} className="record-screen" >Start Recording</Button> */}
-    {/* <Button variant="contained" onClick={stopRecording} className="record-screen">Stop Recording</Button> */}
-    {/* {show ?<VideocamOffIcon onClick={stopRecording} className="record-screen-on recording-icon" />: " "} */}
-  </div>
-  
+    </Tooltip></div>
+
 }
