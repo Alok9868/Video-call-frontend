@@ -10,6 +10,7 @@ let peers = {};
 let streams = [];
 const messengerChannel = "messenger";
 let sendingstream = null;
+var isFirefox = typeof InstallTrigger !== 'undefined';
 // const defaultConstraints = {
 //     video:
 //     {
@@ -24,40 +25,48 @@ let sendingstream = null;
 //     audio: true,
 
 // }
-const constraints = {
+const globalconstraints = {
     video: {
         noiseSuppression: true,
         width: { min: 640, ideal: 1280, max: 1920 },
         height: { min: 480, ideal: 720, max: 1080 },
         aspectRatio: 1.777777778,
         frameRate: { max: 30 },
-        facingMode: { exact: "user" }
+        // facingMode: { exact: "user" }
     },
     audio: { echoCancellation: true }
 };
 export const getLocalPreviewAndInitConnection = async (isRoomHost, identity, roomId = null, onlyAudio, onlyVideo, socketId) => {
-   const startingservers= await fetchTurnCredentials();
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then((stream) => {
-            localstream = stream;
-            sendingstream = stream;
+     await fetchTurnCredentials();
+    if (navigator.mediaDevices) {
+        navigator.mediaDevices.getUserMedia(globalconstraints)
+            .then((stream) => {
+                localstream = stream;
+                sendingstream = stream;
+                
+                if (!onlyAudio) {
+                    localstream.getAudioTracks()[0].enabled = false;
+                }
+                if (!onlyVideo) {
+                    localstream.getVideoTracks()[0].enabled = false;
+                }
+                showLocalVideoPreview(localstream, identity);
 
-            if (!onlyAudio) {
-                localstream.getAudioTracks()[0].enabled = false;
-            }
-            if (!onlyVideo) {
-                localstream.getVideoTracks()[0].enabled = false;
-            }
-            showLocalVideoPreview(localstream, identity);
+                store.dispatch(setShowOverlay(false));
+                isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId)
+            })
+            .catch((err) => {
+                console.log('error in accessing local stream: ' + err.message);
+                // navigate to error in accessing local stream
 
-            store.dispatch(setShowOverlay(false));
-            isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(identity, roomId)
-        })
-        .catch((err) => {
-            console.log('error in accessing local stream: ' + err.message);
-            // navigate to error in accessing local stream
+            });
 
-        });
+    }
+    else {
+        console.log('Error in accessing local stream');
+    }
+
+
     // await fetchTurnCredentials();
 }
 function showLocalVideoPreview(stream, identity) {
