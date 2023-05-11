@@ -1,6 +1,6 @@
 
-const  url="https://video-call-frontend56.herokuapp.com/";  
-export const  server="https://video-call56235845.herokuapp.com"; // http://localhost:8000
+export const  url="http://localhost:3000/";  
+export const  server="http://localhost:8000"; // http://localhost:8000
 export default url;
 //http://localhost:3000/
 // leave room 
